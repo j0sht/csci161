@@ -88,6 +88,8 @@ char getCommand() {
     cout << "Please enter your command: ";
     char cmd;
     cin >> cmd;
+    string garbage;
+    getline(cin, garbage);
     return tolower(cmd);
 }
 
