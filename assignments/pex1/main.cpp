@@ -15,6 +15,72 @@
 #include <cctype> // for tolower()
 using namespace std;
 
+// Reservation
+struct Reservation {
+    int hour, minute;
+    string location, contact;
+};
+typedef Reservation* ReservationPtr;
+
+// Node
+struct Node {
+    ReservationPtr data;
+    Node *next;
+};
+typedef Node* NodePtr;
+
+// Linked list
+class LinkedList {
+private:
+    NodePtr head;
+public:
+    LinkedList() {
+	head = NULL;
+    }
+    bool isEmpty() {
+	return (head == NULL);
+    }
+    void insert(int hour, int minute, string location, string contact) {
+	// Create reservation data
+	ReservationPtr data = new Reservation;
+	data->hour = hour;
+	data->minute = minute;
+	data->location = location;
+	data->contact = contact;
+	// Create new node
+	NodePtr node = new Node;
+	// Add node data
+	node->data = data;
+	// Point next to current head
+	node->next = head;
+	// Point head to new node
+	head = node;
+    }
+    void display() {
+	// Check if list is empty
+	if (this->isEmpty()) {
+	    // Tell user there are reservations in the list
+	    cout << "\nThere is currently no reservation in the "
+		 << "reservation list.\n\n";
+	} else {
+	    // Head is not NULL, display list
+	    NodePtr tmp = head;
+	    while (tmp != NULL) {
+		int hour = tmp->data->hour;
+		int minute = tmp->data->minute;
+		string location = tmp->data->location;
+		string contact = tmp->data->contact;
+		cout << "    pick up time: "
+		     << hour << ":" << minute << endl
+		     << "pick up location: " << location << endl
+		     << "    contact name: " << contact << endl
+		     << "------------\n";
+		tmp = tmp->next;
+	    }
+	}
+    }
+};
+
 // Display's welcome message to user
 void welcome();
 
@@ -25,7 +91,7 @@ void displayMenu();
 char getCommand();
 
 // Submit new taxi reservation
-void submitNewReservation();
+void submitNewReservation(LinkedList &list);
 
 // Get integer in range min..max inclusive
 int getIntInRange(int min, int max, string prompt);
@@ -40,37 +106,41 @@ int getValidMinute();
 string getValidString(string prompt);
 
 // Pick up passenger and remove from list
-void pickUpPassenger();
+void pickUpPassenger(LinkedList &list);
 
 // List all reservations in list
-void listAllReservations();
+void listAllReservations(LinkedList list);
 
 // Display's processed reservations
-void displayProcessedReservations();
+void displayProcessedReservations(LinkedList list);
 
 // Check if reservations are still on the list
-bool reservationsExist();
+bool reservationsExist(LinkedList list);
 
+/* MAIN */
 int main() {
     welcome();
+    displayMenu();
     bool running = true;
+    LinkedList list = LinkedList();
     while (running) {
 	char cmd = getCommand();
 	switch (cmd) {
 	case 's':
-	    submitNewReservation();
+	    submitNewReservation(list);
 	    break;
 	case 'p':
-	    pickUpPassenger();
+	    pickUpPassenger(list);
 	    break;
 	case 'l':
-	    listAllReservations();
+	    listAllReservations(list);
 	    break;
 	case 'h':
+	    displayMenu();
 	    break;
 	case 't':
-	    running = reservationsExist();
-	    displayProcessedReservations();
+	    running = reservationsExist(list);
+	    displayProcessedReservations(list);
 	    break;
 	default:
 	    cout << "Unknown command. Try again.\n";
@@ -78,13 +148,14 @@ int main() {
     }
     return 0;
 }
+/* END MAIN */
 
 void welcome() {
     cout << "\n*** Welcome to Taxi Reservation Management System ***\n";
 }
 
 char getCommand() {
-    displayMenu();
+    cout << "-----------------------------------\n";
     cout << "Please enter your command: ";
     char cmd;
     cin >> cmd;
@@ -99,12 +170,11 @@ void displayMenu() {
 	 << "   or P to pick up the passenger(s)\n"
 	 << "   or L to list all reservations\n"
 	 << "   or H for help (displays this menu)\n"
-	 << "   or T to terminate this program\n\n"
-	 << "-----------------------------------\n";
+	 << "   or T to terminate this program\n\n";
 }
 
 // Submit new taxi reservation
-void submitNewReservation() {
+void submitNewReservation(LinkedList &list) {
     cout << "Submitting reservation...\n\n";
     // Get hour of pick up time
     int hour = getValidHour();
@@ -112,28 +182,28 @@ void submitNewReservation() {
     string location, contact;
     location = getValidString("Please enter the pick up location\n");
     contact = getValidString("Please enter the name of the contact\n");
-    cout << "Will pick up " << contact << " from " << location
-	 << " at " << hour << ":" << minute << endl;
+    list.insert(hour, minute, location, contact);
     cout << "Reservation successfully added into the list.\n";
 }
 
 // Pick up passenger and remove from list
-void pickUpPassenger() {
+void pickUpPassenger(LinkedList &list) {
     cout << "Picking up passenger...\n\n";
 }
 
 // List all reservations in list
-void listAllReservations() {
-    cout << "Listing all reservations...\n\n";
+void listAllReservations(LinkedList list) {
+    list.display();
 }
 
 // Display's processed reservations
-void displayProcessedReservations() {
+void displayProcessedReservations(LinkedList list) {
     cout << "Displaying processed reservations...\n\n";
 }
 
 // Check if reservations are still on the list
-bool reservationsExist() {
+bool reservationsExist(LinkedList list) {
+    // return list.isEmpty();
     return false;
 }
 
