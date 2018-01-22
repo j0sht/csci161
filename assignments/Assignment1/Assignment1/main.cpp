@@ -89,7 +89,7 @@ public:
         if (this->isEmpty()) {
             // Tell user there are reservations in the list
             cout << "\nThere is currently no reservation in the "
-		 << "reservation list.\n\n";
+            << "reservation list.\n\n";
         } else {
             // Head is not NULL, display list
             NodePtr tmp = head;
@@ -99,10 +99,10 @@ public:
                 string location = tmp->data->location;
                 string contact = tmp->data->contact;
                 cout << "    pick up time: "
-		     << hour << ":" << minute << endl
-		     << "pick up location: " << location << endl
-		     << "    contact name: " << contact << endl
-		     << "------------\n";
+                << hour << ":" << minute << endl
+                << "pick up location: " << location << endl
+                << "    contact name: " << contact << endl
+                << "------------\n";
                 tmp = tmp->next;
             }
         }
@@ -111,18 +111,18 @@ public:
         if (this->isEmpty()) {
             // Tell user there are reservations in the list
             cout << "\nThere is currently no reservation in the "
-		 << "reservation list.\n\n";
+            << "reservation list.\n\n";
         } else {
             int hour = earliest->data->hour;
             int minute = earliest->data->minute;
             string location = earliest->data->location;
             string contact = earliest->data->contact;
             cout << "    pick up time: "
-		 << hour << ":" << minute << endl
-		 << "pick up location: " << location << endl
-		 << "    contact name: " << contact << endl
-		 << "The information of this reservation has passed to "
-		 << "a taxi driver.\n";
+            << hour << ":" << minute << endl
+            << "pick up location: " << location << endl
+            << "    contact name: " << contact << endl
+            << "The information of this reservation has passed to "
+            << "a taxi driver.\n";
             if (earliest->prev != NULL) { // Not at front of list
                 earliest->prev->next = earliest->next;
                 if (earliest->next)
@@ -200,28 +200,28 @@ int main() {
     while (running) {
         char cmd = getCommand();
         switch (cmd) {
-	case 's':
-	    submitNewReservation(list);
-	    break;
-	case 'p':
-	    pickUpPassenger(list);
-	    break;
-	case 'l':
-	    listAllReservations(list);
-	    break;
-	case 'h':
-	    displayMenu();
-	    break;
-	case 't':
-	    running = !list.isEmpty();
-	    if (running) {
-		reservationsExist();
-	    } else {
-		displayProcessedReservations(list);
-	    }
-	    break;
-	default:
-	    cout << "Unknown command. Try again.\n";
+            case 's':
+                submitNewReservation(list);
+                break;
+            case 'p':
+                pickUpPassenger(list);
+                break;
+            case 'l':
+                listAllReservations(list);
+                break;
+            case 'h':
+                displayMenu();
+                break;
+            case 't':
+                running = !list.isEmpty();
+                if (running) {
+                    reservationsExist();
+                } else {
+                    displayProcessedReservations(list);
+                }
+                break;
+            default:
+                cout << "Unknown command. Try again.\n";
         }
     }
     return 0;
@@ -244,11 +244,11 @@ char getCommand() {
 
 void displayMenu() {
     cout << endl
-	 << "Enter S to submit a new reservation\n"
-	 << "   or P to pick up the passenger(s)\n"
-	 << "   or L to list all reservations\n"
-	 << "   or H for help (displays this menu)\n"
-	 << "   or T to terminate this program\n\n";
+    << "Enter S to submit a new reservation\n"
+    << "   or P to pick up the passenger(s)\n"
+    << "   or L to list all reservations\n"
+    << "   or H for help (displays this menu)\n"
+    << "   or T to terminate this program\n\n";
 }
 
 // Submit new taxi reservation
@@ -276,12 +276,12 @@ void listAllReservations(LinkedList list) {
 // Display's processed reservations
 void displayProcessedReservations(LinkedList list) {
     cout << "The total number of reservations processed is "
-	 << list.getProcessed() << ".\n";
+    << list.getProcessed() << ".\n";
 }
 
 void reservationsExist() {
     cout << "\nProgram can not terminate.\n"
-	 << "There are still reservations in the reservations list.\n";
+    << "There are still reservations in the reservations list.\n";
 }
 
 int getIntInRange(int min, int max, string prompt) {
@@ -295,7 +295,7 @@ int getIntInRange(int min, int max, string prompt) {
         valid = ((val >= min) && (val <= max));
         if (!valid)
             cout << "The number must be in the range of "
-		 << min << " and " << max << ". Enter again.\n";
+            << min << " and " << max << ". Enter again.\n";
     }
     return val;
 }
