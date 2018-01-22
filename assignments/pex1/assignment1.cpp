@@ -80,8 +80,7 @@ public:
             earliest = node;
         } else {
             // Check if new reservations time is earlier than earliest
-            int earliestHour = earliest->data->hour;
-            earliestHour *= 60;
+            int earliestHour = earliest->data->hour * 60;
             int earliestMin = earliest->data->minute;
             int earliestTime = earliestHour + earliestMin;
             int newTime = (data->hour * 60) + data->minute;
