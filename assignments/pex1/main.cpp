@@ -79,7 +79,7 @@ public:
         // Point head to new node
         head = node;
         // Check if earliest is NULL
-        if (earliest == NULL) {
+        if (!earliest) {
             // Set new record to earliest
             earliest = node;
         } else {
@@ -102,7 +102,7 @@ public:
         } else {
             // Head is not NULL, display list
             NodePtr tmp = head;
-            while (tmp != NULL) {
+            while (tmp) {
 		printPickUpTime(tmp->data);
                 tmp = tmp->next;
             }
@@ -148,7 +148,7 @@ public:
                 tmp = earliest->next;
 	    }
 	    // Loop through list and set new earliest reservation
-            while (tmp != NULL) {
+            while (tmp) {
 		// currTime represents current iterations time
                 int currHour = tmp->data->hour * 60;
                 int currTime = currHour + tmp->data->minute;
