@@ -8,7 +8,6 @@
  *          taxi reservations in one day.
  */
 #include <iostream>
-#include <cctype> // for tolower()
 using namespace std;
 
 /* DATA MODELS */
@@ -219,18 +218,23 @@ int main() {
         char cmd = getCommand();
         switch (cmd) {
 	case 's':
+	case 'S':
 	    submitNewReservation(list);
 	    break;
 	case 'p':
+	case 'P':
 	    list.removeEarliest();
 	    break;
 	case 'l':
+	case 'L':
 	    list.display();
 	    break;
 	case 'h':
+	case 'H':
 	    printMenu();
 	    break;
 	case 't':
+	case 'T':
 	    running = !list.isEmpty();
 	    if (running) {
 		printReservationsExistMessage();
@@ -257,7 +261,7 @@ char getCommand() {
     cin >> cmd;
     string garbage;
     getline(cin, garbage);
-    return tolower(cmd);
+    return cmd;
 }
 
 void printMenu() {
