@@ -2,7 +2,7 @@
  * File: assignment1.cpp
  * Author: Joshua Tate
  * Date: January 18, 2018
- * Updated: January 21, 2018
+ * Updated: January 22, 2018
  *
  * Purpose: Program to help the dispatcher in a taxi company to manage
  *          taxi reservations in one day.
@@ -25,6 +25,12 @@ public:
 	     << "    contact name: " << contact << endl
 	     << "------------\n";
     }
+    int getTime() {
+	return (hour * 60) + minute;
+    }
+    bool timeIsLessThan(Reservation* other) {
+	return this->getTime() < other->getTime();
+    }
 };
 typedef Reservation* ReservationPtr;
 
@@ -38,6 +44,7 @@ private:
 	Node *next;
     };
     typedef Node* NodePtr;
+
     // instance variables
     NodePtr head, earliest;
     int processed;
@@ -76,16 +83,9 @@ public:
         if (!earliest) {
             // Set new record to earliest
             earliest = node;
-        } else {
-            // Check if new reservations time is earlier than earliest
-            int earliestHour = earliest->data->hour * 60;
-            int earliestMin = earliest->data->minute;
-            int earliestTime = earliestHour + earliestMin;
-            int newTime = (data->hour * 60) + data->minute;
-            if (newTime < earliestTime) {
-                // Set new earliest pick up time
-                earliest = node;
-            }
+        } else if (data->timeIsLessThan(earliest->data)) {
+	    // Set new earliest pick up time
+	    earliest = node;
         }
     }
     void display() {
@@ -142,14 +142,8 @@ public:
 	    }
 	    // Loop through list and set new earliest reservation
             while (tmp) {
-		// currTime represents current iterations time
-                int currHour = tmp->data->hour * 60;
-                int currTime = currHour + tmp->data->minute;
-		// earTime represents the current earliest's time
-                int earHour = earliest->data->hour * 60;
-                int earTime = earHour + earliest->data->minute;
-		// Check if currTime is less than earTime
-                if (currTime < earTime) {
+		// Check if current iteration is less than earliest
+                if (tmp->data->timeIsLessThan(earliest->data)) {
 		    // Set earliest to current iteration
                     earliest = tmp;
                 }
