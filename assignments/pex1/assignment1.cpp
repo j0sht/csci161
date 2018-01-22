@@ -15,9 +15,12 @@ using namespace std;
 // Reservation
 class Reservation {
 public:
-    int hour, minute;
-    string location, contact;
-
+    void userSetValues() {
+        hour = getValidHour();
+        minute = getValidMinute();
+        location = getValidString("Please enter the pick up location\n");
+        contact = getValidString("Please enter the name of the contact\n");
+    }
     void printPickUpTime() {
 	cout << "    pick up time: "
 	     << hour << ":" << minute << endl
@@ -30,6 +33,43 @@ public:
     }
     bool timeIsLessThan(Reservation* other) {
 	return this->getTime() < other->getTime();
+    }
+private:
+    int hour, minute;
+    string location, contact;
+
+    int getIntInRange(int min, int max, string prompt) {
+	int val;
+	bool valid = false;
+	string garbage;
+	cout << prompt;
+	while (!valid) {
+	    cin >> val;
+	    getline(cin, garbage);
+	    valid = ((val >= min) && (val <= max));
+	    if (!valid)
+		cout << "The number must be in the range of "
+		     << min << " and " << max << ". Enter again.\n";
+	}
+	return val;
+    }
+    int getValidHour() {
+	string prompt = "Please enter the hour of the pick up time.\n";
+	return getIntInRange(0, 23, prompt);
+    }
+    int getValidMinute() {
+	string prompt = "Please enter the minute of the pick up time.\n";
+	return getIntInRange(0, 59, prompt);
+    }
+    string getValidString(string prompt) {
+	string s = "";
+	cout << prompt;
+	while (s.empty()) {
+	    getline(cin, s);
+	    if (s.empty())
+		cout << "The string must NOT be an empty one. Enter again.\n";
+	}
+	return s;
     }
 };
 typedef Reservation* ReservationPtr;
@@ -162,14 +202,6 @@ void welcome();
 void displayMenu();
 // Get user's command character
 char getCommand();
-// Get integer in range min..max inclusive
-int getIntInRange(int min, int max, string prompt);
-// Get hour between 0 and 23 from user
-int getValidHour();
-// Get minute between 0 and 59 from user
-int getValidMinute();
-// Get non-empty string 
-string getValidString(string prompt);
 // Submit new taxi reservation
 void submitNewReservation(LinkedList &list);
 // Check if reservations are still on the list
@@ -240,10 +272,11 @@ void displayMenu() {
 void submitNewReservation(LinkedList &list) {
     // Create reservation
     ReservationPtr data = new Reservation;
-    data->hour = getValidHour();
-    data->minute = getValidMinute();
-    data->location = getValidString("Please enter the pick up location\n");
-    data->contact = getValidString("Please enter the name of the contact\n");
+    // data->hour = getValidHour();
+    // data->minute = getValidMinute();
+    // data->location = getValidString("Please enter the pick up location\n");
+    // data->contact = getValidString("Please enter the name of the contact\n");
+    data->userSetValues();
     list.insert(data);
     cout << "Reservation successfully added into the list.\n";
 }
@@ -256,41 +289,4 @@ void displayProcessedReservations(LinkedList list) {
 void reservationsExist() {
     cout << "\nProgram can not terminate.\n"
 	 << "There are still reservations in the reservations list.\n";
-}
-
-int getIntInRange(int min, int max, string prompt) {
-    int val;
-    bool valid = false;
-    string garbage;
-    cout << prompt;
-    while (!valid) {
-        cin >> val;
-        getline(cin, garbage);
-        valid = ((val >= min) && (val <= max));
-        if (!valid)
-            cout << "The number must be in the range of "
-		 << min << " and " << max << ". Enter again.\n";
-    }
-    return val;
-}
-
-int getValidHour() {
-    string prompt = "Please enter the hour of the pick up time.\n";
-    return getIntInRange(0, 23, prompt);
-}
-
-int getValidMinute() {
-    string prompt = "Please enter the minute of the pick up time.\n";
-    return getIntInRange(0, 59, prompt);
-}
-
-string getValidString(string prompt) {
-    string s = "";
-    cout << prompt;
-    while (s.empty()) {
-        getline(cin, s);
-        if (s.empty())
-            cout << "The string must NOT be an empty one. Enter again.\n";
-    }
-    return s;
 }
