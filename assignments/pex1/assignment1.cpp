@@ -1,15 +1,11 @@
 /*
- * File: main.cpp
+ * File: assignment1.cpp
  * Author: Joshua Tate
  * Date: January 18, 2018
  * Updated: January 21, 2018
  *
  * Purpose: Program to help the dispatcher in a taxi company to manage
  *          taxi reservations in one day.
- *
- * Notes: n/a (any additional notes on the use of the file)
- *
- * References: n/a (optional - a list fo related reference materials)
  */
 #include <iostream>
 #include <cctype> // for tolower()
@@ -116,7 +112,7 @@ public:
 	    cout << "The information of this reservation has passed to "
 		 << "a taxi driver.\n";
 	    // Check if not the front of the list
-            if (earliest->prev != NULL) {
+            if (earliest->prev) {
 		// Set previous node's next to current earliest's next
                 earliest->prev->next = earliest->next;
 		// Check if next is not NULL
@@ -125,7 +121,7 @@ public:
                     earliest->next->prev = earliest->prev;
 		}
             } else { // At the front of the list
-		// Check earliest is not the back of the list
+		// Check if earliest is not the back of the list
                 if (earliest->next) {
 		    // Set earliest's next node's prev node to NULL
 		    //  indicating head of the list
@@ -139,12 +135,12 @@ public:
 	    earliest->prev = NULL;
 	    earliest->next = NULL;
             delete earliest;
-            // Find new earliest
+            // Find new earliest pick up time
             earliest = head;
             NodePtr tmp = head;
 	    // Check if list is not empty
             if (earliest) {
-		// Set temp head's next node to compare against
+		// Set tmp to head's next node to compare against
                 tmp = earliest->next;
 	    }
 	    // Loop through list and set new earliest reservation
