@@ -272,10 +272,6 @@ void displayMenu() {
 void submitNewReservation(LinkedList &list) {
     // Create reservation
     ReservationPtr data = new Reservation;
-    // data->hour = getValidHour();
-    // data->minute = getValidMinute();
-    // data->location = getValidString("Please enter the pick up location\n");
-    // data->contact = getValidString("Please enter the name of the contact\n");
     data->userSetValues();
     list.insert(data);
     cout << "Reservation successfully added into the list.\n";
