@@ -217,24 +217,19 @@ int main() {
     while (running) {
         char cmd = getCommand();
         switch (cmd) {
-	case 's':
-	case 'S':
+	case 's': case 'S':
 	    submitNewReservation(list);
 	    break;
-	case 'p':
-	case 'P':
+	case 'p': case 'P':
 	    list.removeEarliest();
 	    break;
-	case 'l':
-	case 'L':
+	case 'l': case 'L':
 	    list.display();
 	    break;
-	case 'h':
-	case 'H':
+	case 'h': case 'H':
 	    printMenu();
 	    break;
-	case 't':
-	case 'T':
+	case 't': case 'T':
 	    running = !list.isEmpty();
 	    if (running) {
 		printReservationsExistMessage();
