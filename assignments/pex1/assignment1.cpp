@@ -199,22 +199,22 @@ public:
 // Display's welcome message to user
 void welcome();
 // Display's list of acceptable commands to user
-void displayMenu();
+void printMenu();
 // Get user's command character
 char getCommand();
 // Submit new taxi reservation
 void submitNewReservation(LinkedList &list);
-// Check if reservations are still on the list
-void reservationsExist();
+// Tell user that reservations exist
+void printReservationsExistMessage();
 // Display's processed reservations
-void displayProcessedReservations(LinkedList list);
+void printProcessedReservationCount(LinkedList list);
 
 /* MAIN */
 int main() {
     bool running = true;
     LinkedList list = LinkedList();
     welcome();
-    displayMenu();
+    printMenu();
     while (running) {
         char cmd = getCommand();
         switch (cmd) {
@@ -228,14 +228,14 @@ int main() {
 	    list.display();
 	    break;
 	case 'h':
-	    displayMenu();
+	    printMenu();
 	    break;
 	case 't':
 	    running = !list.isEmpty();
 	    if (running) {
-		reservationsExist();
+		printReservationsExistMessage();
 	    } else {
-		displayProcessedReservations(list);
+		printProcessedReservationCount(list);
 	    }
 	    break;
 	default:
@@ -260,7 +260,7 @@ char getCommand() {
     return tolower(cmd);
 }
 
-void displayMenu() {
+void printMenu() {
     cout << endl
 	 << "Enter S to submit a new reservation\n"
 	 << "   or P to pick up the passenger(s)\n"
@@ -277,12 +277,12 @@ void submitNewReservation(LinkedList &list) {
     cout << "Reservation successfully added into the list.\n";
 }
 
-void displayProcessedReservations(LinkedList list) {
+void printProcessedReservationCount(LinkedList list) {
     cout << "The total number of reservations processed is "
 	 << list.getProcessed() << ".\n";
 }
 
-void reservationsExist() {
+void printReservationsExistMessage() {
     cout << "\nProgram can not terminate.\n"
 	 << "There are still reservations in the reservations list.\n";
 }
