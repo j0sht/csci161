@@ -13,40 +13,38 @@ using namespace std;
 
 /* DATA MODELS */
 // Reservation
-struct Reservation {
+class Reservation {
+public:
     int hour, minute;
     string location, contact;
+
+    void printPickUpTime() {
+	cout << "    pick up time: "
+	     << hour << ":" << minute << endl
+	     << "pick up location: " << location << endl
+	     << "    contact name: " << contact << endl
+	     << "------------\n";
+    }
 };
 typedef Reservation* ReservationPtr;
-
-// Node
-struct Node {
-    ReservationPtr data;
-    Node *prev;
-    Node *next;
-};
-typedef Node* NodePtr;
 
 // Linked list
 class LinkedList {
 private:
+    // Node
+    struct Node {
+	ReservationPtr data;
+	Node *prev;
+	Node *next;
+    };
+    typedef Node* NodePtr;
+    // instance variables
     NodePtr head, earliest;
     int processed;
     void printNoReservationsMessage() {
 	// Tell user there are reservations in the list
 	cout << "\nThere is currently no reservation in the "
 	     << "reservation list.\n\n";
-    }
-    void printPickUpTime(ReservationPtr data) {
-	int hour = data->hour;
-	int minute = data->minute;
-	string location = data->location;
-	string contact = data->contact;
-	cout << "    pick up time: "
-	     << hour << ":" << minute << endl
-	     << "pick up location: " << location << endl
-	     << "    contact name: " << contact << endl
-	     << "------------\n";
     }
 public:
     LinkedList() {
@@ -98,7 +96,7 @@ public:
             // Head is not NULL, display list
             NodePtr tmp = head;
             while (tmp) {
-		printPickUpTime(tmp->data);
+	        tmp->data->printPickUpTime();
                 tmp = tmp->next;
             }
         }
@@ -107,7 +105,7 @@ public:
         if (this->isEmpty()) {
 	    printNoReservationsMessage();
         } else {
-	    printPickUpTime(earliest->data);
+	    earliest->data->printPickUpTime();
 	    cout << "The information of this reservation has passed to "
 		 << "a taxi driver.\n";
 	    // Check if not the front of the list
