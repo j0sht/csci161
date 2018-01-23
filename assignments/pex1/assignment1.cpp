@@ -24,8 +24,7 @@ public:
 	cout << "    pick up time: "
 	     << hour << ":" << minute << endl
 	     << "pick up location: " << location << endl
-	     << "    contact name: " << contact << endl
-	     << "------------\n";
+	     << "    contact name: " << contact << endl;
     }
     int getTime() {
 	return (hour * 60) + minute;
@@ -153,6 +152,7 @@ public:
             NodePtr tmp = head;
             while (tmp) {
 	        tmp->data->printPickUpTime();
+		cout << "------------\n";
                 tmp = tmp->next;
             }
         }
