@@ -8,35 +8,39 @@
  *          taxi reservations in one day.
  */
 #include <iostream>
-#include <iomanip>
+#include <iomanip> // for setfill and setw
 using namespace std;
 
 /* DATA MODELS */
-// Reservation
 class Reservation {
 public:
+    // Sets member variable's value to user provided input
     void userSetValues() {
         hour = getValidHour();
         minute = getValidMinute();
         location = getValidString("Please enter the pick up location\n");
         contact = getValidString("Please enter the name of the contact\n");
     }
+    // Displays reservation's pick up time
     void printPickUpTime() {
 	cout << "    pick up time: "
 	     << hour << ":" << setfill('0') << setw(2) << minute << endl
 	     << "pick up location: " << location << endl
 	     << "    contact name: " << contact << endl;
     }
+    // Returns pick up time
     int getTime() {
 	return (hour * 60) + minute;
     }
+    // Returns true if time is less than other reservations pick up time
     bool timeIsLessThan(Reservation* other) {
 	return this->getTime() < other->getTime();
     }
 private:
+    // Reservation member variables
     int hour, minute;
     string location, contact;
-
+    // Get's integer between min and max, inclusive, from user with prompt
     int getIntInRange(int min, int max, string prompt) {
 	int val;
 	bool valid = false;
@@ -52,14 +56,17 @@ private:
 	}
 	return val;
     }
+    // Gets integer between 0 and 23, inclusive, from user
     int getValidHour() {
 	string prompt = "Please enter the hour of the pick up time.\n";
 	return getIntInRange(0, 23, prompt);
     }
+    // Gets integer between 0 and 59, inclusive, from user
     int getValidMinute() {
 	string prompt = "Please enter the minute of the pick up time.\n";
 	return getIntInRange(0, 59, prompt);
     }
+    // Gets valid string from user with prompt
     string getValidString(string prompt) {
 	string s = "";
 	cout << prompt;
@@ -72,22 +79,27 @@ private:
 	return s;
     }
 };
+// Convenience type defintion for Reservation*
 typedef Reservation* ReservationPtr;
 
-// Linked list
 class LinkedList {
 public:
+    // Constructor - intializes member variables
     LinkedList() {
         head = NULL;
 	tail = NULL;
         processed = 0;
     }
+    // Returns true if list is empty, otherwise false
     bool isEmpty() {
         return (head == NULL);
     }
+    // Returns processed count
     int getProcessed() {
         return processed;
     }
+    // Insert's data into list based on data's pick up time
+    //  sorted from earliest to latest pick up time
     void insert(ReservationPtr data) {
         // Create new node
         NodePtr node = new Node;
@@ -144,12 +156,11 @@ public:
 	    }
 	}
     }
+    // Display's list contents
     void display() {
-        // Check if list is empty
         if (this->isEmpty()) {
             printNoReservationsMessage();
         } else {
-            // Head is not NULL, display list
             NodePtr tmp = head;
             while (tmp) {
 	        tmp->data->printPickUpTime();
@@ -158,6 +169,7 @@ public:
             }
         }
     }
+    // Remove's the head of the list
     void removeEarliest() {
         if (this->isEmpty()) {
 	    printNoReservationsMessage();
@@ -176,26 +188,28 @@ public:
 	    }
 	    // Remove victim node
 	    delete victim->data;
+	    victim->data = NULL;
 	    victim->next = NULL;
 	    delete victim;
+	    victim = NULL;
 	    // Increment processed
             processed++;
         }
     }
 private:
-    // Node
+    // Node definition and convenience typedef for Node*
     struct Node {
 	ReservationPtr data;
 	Node *prev;
 	Node *next;
     };
     typedef Node* NodePtr;
-
-    // instance variables
+    // LinkedList member variables
+    // Pointers to head and tail of list
     NodePtr head, tail;
+    // Integer to keep track of processed reservations
     int processed;
-
-    // private instance method
+    // Informs user there are no reservations in the list
     void printNoReservationsMessage() {
 	// Tell user there are reservations in the list
 	cout << "\nThere is currently no reservation in the "
@@ -210,7 +224,7 @@ void welcome();
 void printMenu();
 // Get user's command character
 char getCommand();
-// Submit new taxi reservation
+// Submit new taxi reservation based on user's input
 void submitNewReservation(LinkedList &list);
 // Tell user that reservations exist
 void printReservationsExistMessage();
@@ -219,11 +233,16 @@ void printProcessedReservationCount(LinkedList list);
 
 /* MAIN */
 int main() {
+    // running is set to false when user attempts to terminate program
+    //  and the list is empty
     bool running = true;
+    // list to manage reservations
     LinkedList list = LinkedList();
+    // welcome user to program and display menu
     welcome();
     printMenu();
     while (running) {
+	// Get user command and perform appropriate action
         char cmd = getCommand();
         switch (cmd) {
 	case 's': case 'S':
@@ -258,15 +277,20 @@ void welcome() {
     cout << "\n*** Welcome to Taxi Reservation Management System ***\n";
 }
 char getCommand() {
+    // Prompt user to enter command
     cout << "-----------------------------------\n";
     cout << "Please enter your command: ";
+    // Get command from stdin
     char cmd;
     cin >> cmd;
+    // Remove extraneous info in stdin buffer
     string garbage;
     getline(cin, garbage);
+    // Return entered command
     return cmd;
 }
 void printMenu() {
+    // Display available options to user
     cout << endl
 	 << "Enter S to submit a new reservation\n"
 	 << "   or P to pick up the passenger(s)\n"
@@ -277,15 +301,21 @@ void printMenu() {
 void submitNewReservation(LinkedList &list) {
     // Create reservation
     ReservationPtr data = new Reservation;
+    // Get user to set values for reservation
     data->userSetValues();
+    // Insert reservation into list
     list.insert(data);
+    // Inform user reservation was successfully added
     cout << "Reservation successfully added into the list.\n";
 }
 void printProcessedReservationCount(LinkedList list) {
+    // Show user processed reservation count
     cout << "The total number of reservations processed is "
 	 << list.getProcessed() << ".\n";
 }
 void printReservationsExistMessage() {
+    // Inform user that the program cannot terminate until
+    //  there are no more reservations
     cout << "\nProgram can not terminate.\n"
 	 << "There are still reservations in the reservations list.\n";
 }
