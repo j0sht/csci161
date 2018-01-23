@@ -8,6 +8,7 @@
  *          taxi reservations in one day.
  */
 #include <iostream>
+#include <iomanip>
 using namespace std;
 
 /* DATA MODELS */
@@ -22,7 +23,7 @@ public:
     }
     void printPickUpTime() {
 	cout << "    pick up time: "
-	     << hour << ":" << minute << endl
+	     << hour << ":" << setfill('0') << setw(2) << minute << endl
 	     << "pick up location: " << location << endl
 	     << "    contact name: " << contact << endl;
     }
