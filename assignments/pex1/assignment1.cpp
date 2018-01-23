@@ -117,7 +117,7 @@ public:
 	    node->next = head;
 	    // Set node's prev to NULL indicating head
 	    node->prev = NULL;
-	    // Set node and tail to the first node
+	    // Set head and tail to the first node
 	    head = node;
 	    tail = node;
 	}
@@ -125,7 +125,7 @@ public:
 	else {
 	    // Check if back of the list
 	    if (tmp == NULL) {
-		// Point new node's next to NULL
+		// Point new node's next to NULL indicating tail
 		node->next = NULL;
 		// Point current tail's next to new node
 		tail->next = node;
@@ -138,6 +138,8 @@ public:
 	    else if (tmp == head) {
 		// Set node's next to current head
 		node->next = head;
+		// Set node's prev to NULL indicating head
+		node->prev = NULL;
 		// Set current head's prev to node
 		head->prev = node;
 		// Set head to new node
