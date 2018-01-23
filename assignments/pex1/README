@@ -1,0 +1,35 @@
+assignment1.cpp is a standalone C++ program that can be compiled with
+the command:
+
+    $ g++ -Wall assignment1.cpp -o pex1
+
+Once compiled, the program can simply be run with:
+
+    $ ./pex1
+
+Where '$' represents the terminal prompt, and assuming assignment1.cpp
+is in the directory in which the command is run.
+
+The program uses a doubly linked list to satisfy all of the assignments
+requirements.
+    - The program allows the user to enter a reservation into the list,
+      and satisfies all the user input validation. The user entered
+      reservation is inserted into the list according to its pick up time,
+      where the list is ordered from earliest pick up time to the latest.
+    - The program "pick's up" the passenger with the earliest pick up time
+      among all the reservations in the list, and displays an appropriate
+      message if the list is empty when the user attempts to pick up
+      a passenger.
+    - The program allows the user to view all reservations in the list.
+    - The program allows the user to terminate the program if the list is
+      empty. If the list is empty when the user terminates, the program
+      displays the number of processed reservations then exits. If the list
+      is not empty, the program displays an appropriate message, ignores
+      the request to terminate, and keeps running.
+    - The program displays a menu of acceptable commands, and accepts upper
+      and lowercase versions of the acceptable commands.
+
+The program assumes that the user always enters a character for a command
+and integer numbers for the hours and minutes.
+
+As of testing on January 22, 2018, there are no known bugs.
