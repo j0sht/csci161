@@ -66,7 +66,8 @@ private:
 	while (s.empty()) {
 	    getline(cin, s);
 	    if (s.empty())
-		cout << "The string must NOT be an empty one. Enter again.\n";
+		cout << "The string must NOT be an empty one. "
+		     << "Enter again.\n";
 	}
 	return s;
     }
@@ -75,27 +76,10 @@ typedef Reservation* ReservationPtr;
 
 // Linked list
 class LinkedList {
-private:
-    // Node
-    struct Node {
-	ReservationPtr data;
-	Node *prev;
-	Node *next;
-    };
-    typedef Node* NodePtr;
-
-    // instance variables
-    NodePtr head, earliest;
-    int processed;
-    void printNoReservationsMessage() {
-	// Tell user there are reservations in the list
-	cout << "\nThere is currently no reservation in the "
-	     << "reservation list.\n\n";
-    }
 public:
     LinkedList() {
         head = NULL;
-        earliest = NULL;
+	tail = NULL;
         processed = 0;
     }
     bool isEmpty() {
@@ -109,23 +93,56 @@ public:
         NodePtr node = new Node;
         // Add node data
         node->data = data;
-        // Point next to current head, and prev to NULL
-        node->next = head;
-        node->prev = NULL;
-        // If head is not NULL, point current head prev to new node
-        if (head) {
-            head->prev = node;
-        }
-        // Point head to new node
-        head = node;
-        // Check if earliest is NULL
-        if (!earliest) {
-            // Set new record to earliest
-            earliest = node;
-        } else if (data->timeIsLessThan(earliest->data)) {
-	    // Set new earliest pick up time
-	    earliest = node;
-        }
+	// Create tmp node to iterate through list,
+	//  starting with current head
+	NodePtr tmp = head;
+	// Search for position to insert based on pick up time
+	while (tmp && tmp->data->timeIsLessThan(data))
+	    tmp = tmp->next;
+	// Check if it is the first element
+	if (!head) {
+	    // Set node's next to head
+	    node->next = head;
+	    // Set node's prev to NULL indicating head
+	    node->prev = NULL;
+	    // Set node and tail to the first node
+	    head = node;
+	    tail = node;
+	}
+	// Not the first element
+	else {
+	    // Check if back of the list
+	    if (tmp == NULL) {
+		// Point new node's next to NULL
+		node->next = NULL;
+		// Point current tail's next to new node
+		tail->next = node;
+		// Point new node's prev to current tail
+		node->prev = tail;
+		// Set tail to new node
+		tail = node;
+	    }
+	    // Check if front of the list
+	    else if (tmp == head) {
+		// Set node's next to current head
+		node->next = head;
+		// Set current head's prev to node
+		head->prev = node;
+		// Set head to new node
+		head = node;
+	    }
+	    // Between two nodes
+	    else {
+		// Point tmp node's prev node's next to new node
+		tmp->prev->next = node;
+		// Point new node's prev to tmp node's prev
+		node->prev = tmp->prev;
+		// Point new node's next to tmp 
+		node->next = tmp;
+		// Point tmp's prev to new node
+		tmp->prev = node;
+	    }
+	}
     }
     void display() {
         // Check if list is empty
@@ -144,53 +161,44 @@ public:
         if (this->isEmpty()) {
 	    printNoReservationsMessage();
         } else {
-	    earliest->data->printPickUpTime();
+	    // Process head
+	    head->data->printPickUpTime();
 	    cout << "The information of this reservation has passed to "
 		 << "a taxi driver.\n";
-	    // Check if not the front of the list
-            if (earliest->prev) {
-		// Set previous node's next to current earliest's next
-                earliest->prev->next = earliest->next;
-		// Check if next is not NULL
-                if (earliest->next) {
-		    // Set next's prev node to current earliests prev node
-                    earliest->next->prev = earliest->prev;
-		}
-            } else { // At the front of the list
-		// Check if earliest is not the back of the list
-                if (earliest->next) {
-		    // Set earliest's next node's prev node to NULL
-		    //  indicating head of the list
-                    earliest->next->prev = NULL;
-                }
-		// Set head to earliest's next node
-                head = earliest->next;
-            }
-	    // Delete allocated memory related to earliest node
-            delete earliest->data;
-	    earliest->prev = NULL;
-	    earliest->next = NULL;
-            delete earliest;
-            // Find new earliest pick up time
-            earliest = head;
-            NodePtr tmp = head;
+	    // Create victim to remove
+	    NodePtr victim = head;
+	    // Set head to next node in the list
+	    head = head->next;
 	    // Check if list is not empty
-            if (earliest) {
-		// Set tmp to head's next node to compare against
-                tmp = earliest->next;
+	    if (head) {
+		head->prev = NULL;
 	    }
-	    // Loop through list and set new earliest reservation
-            while (tmp) {
-		// Check if current iteration is less than earliest
-                if (tmp->data->timeIsLessThan(earliest->data)) {
-		    // Set earliest to current iteration
-                    earliest = tmp;
-                }
-                tmp = tmp->next;
-            }
+	    // Remove victim node
+	    delete victim->data;
+	    victim->next = NULL;
+	    delete victim;
 	    // Increment processed
             processed++;
         }
+    }
+private:
+    // Node
+    struct Node {
+	ReservationPtr data;
+	Node *prev;
+	Node *next;
+    };
+    typedef Node* NodePtr;
+
+    // instance variables
+    NodePtr head, tail;
+    int processed;
+
+    // private instance method
+    void printNoReservationsMessage() {
+	// Tell user there are reservations in the list
+	cout << "\nThere is currently no reservation in the "
+	     << "reservation list.\n\n";
     }
 };
 
@@ -248,7 +256,6 @@ int main() {
 void welcome() {
     cout << "\n*** Welcome to Taxi Reservation Management System ***\n";
 }
-
 char getCommand() {
     cout << "-----------------------------------\n";
     cout << "Please enter your command: ";
@@ -258,7 +265,6 @@ char getCommand() {
     getline(cin, garbage);
     return cmd;
 }
-
 void printMenu() {
     cout << endl
 	 << "Enter S to submit a new reservation\n"
@@ -267,7 +273,6 @@ void printMenu() {
 	 << "   or H for help (displays this menu)\n"
 	 << "   or T to terminate this program\n\n";
 }
-
 void submitNewReservation(LinkedList &list) {
     // Create reservation
     ReservationPtr data = new Reservation;
@@ -275,12 +280,10 @@ void submitNewReservation(LinkedList &list) {
     list.insert(data);
     cout << "Reservation successfully added into the list.\n";
 }
-
 void printProcessedReservationCount(LinkedList list) {
     cout << "The total number of reservations processed is "
 	 << list.getProcessed() << ".\n";
 }
-
 void printReservationsExistMessage() {
     cout << "\nProgram can not terminate.\n"
 	 << "There are still reservations in the reservations list.\n";
