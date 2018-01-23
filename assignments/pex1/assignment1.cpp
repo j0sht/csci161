@@ -2,7 +2,7 @@
  * File: assignment1.cpp
  * Author: Joshua Tate
  * Date: January 18, 2018
- * Updated: January 22, 2018
+ * Updated: January 23, 2018
  *
  * Purpose: Program to help the dispatcher in a taxi company to manage
  *          taxi reservations in one day.
@@ -40,7 +40,8 @@ private:
     // Reservation member variables
     int hour, minute;
     string location, contact;
-    // Get's integer between min and max, inclusive, from user with prompt
+    // Get's and returns integer between min and max,
+    //  inclusive, from user with prompt
     int getIntInRange(int min, int max, string prompt) {
 	int val;
 	bool valid = false;
@@ -56,17 +57,17 @@ private:
 	}
 	return val;
     }
-    // Gets integer between 0 and 23, inclusive, from user
+    // Gets and returns an integer between 0 and 23, inclusive, from user
     int getValidHour() {
 	string prompt = "Please enter the hour of the pick up time.\n";
 	return getIntInRange(0, 23, prompt);
     }
-    // Gets integer between 0 and 59, inclusive, from user
+    // Gets and returns an integer between 0 and 59, inclusive, from user
     int getValidMinute() {
 	string prompt = "Please enter the minute of the pick up time.\n";
 	return getIntInRange(0, 59, prompt);
     }
-    // Gets valid string from user with prompt
+    // Gets and returns a non empty string from user with prompt
     string getValidString(string prompt) {
 	string s = "";
 	cout << prompt;
@@ -108,53 +109,27 @@ public:
 	// Create tmp node to iterate through list,
 	//  starting with current head
 	NodePtr tmp = head;
-	// Search for position to insert based on pick up time
+	// Iterate through list while tmp is not NULL and
+	//  tmp's time is less than the new data's time
 	while (tmp && tmp->data->timeIsLessThan(data))
 	    tmp = tmp->next;
 	// Check if it is the first element
 	if (!head) {
-	    // Set node's next to head
-	    node->next = head;
-	    // Set node's prev to NULL indicating head
-	    node->prev = NULL;
-	    // Set head and tail to the first node
-	    head = node;
-	    tail = node;
+	    setUpFirstNodeWith(node);
 	}
 	// Not the first element
 	else {
-	    // Check if back of the list
+	    // Check if it is the back of the list
 	    if (tmp == NULL) {
-		// Point new node's next to NULL indicating tail
-		node->next = NULL;
-		// Point current tail's next to new node
-		tail->next = node;
-		// Point new node's prev to current tail
-		node->prev = tail;
-		// Set tail to new node
-		tail = node;
+	        setTailTo(node);
 	    }
-	    // Check if front of the list
+	    // Check if it is the front of the list
 	    else if (tmp == head) {
-		// Set node's next to current head
-		node->next = head;
-		// Set node's prev to NULL indicating head
-		node->prev = NULL;
-		// Set current head's prev to node
-		head->prev = node;
-		// Set head to new node
-		head = node;
+		setHeadTo(node);
 	    }
-	    // Between two nodes
+	    // It is between two nodes
 	    else {
-		// Point tmp node's prev node's next to new node
-		tmp->prev->next = node;
-		// Point new node's prev to tmp node's prev
-		node->prev = tmp->prev;
-		// Point new node's next to tmp 
-		node->next = tmp;
-		// Point tmp's prev to new node
-		tmp->prev = node;
+		insertBefore(node, tmp);
 	    }
 	}
     }
@@ -171,31 +146,17 @@ public:
             }
         }
     }
-    // Remove's the head of the list
+    // Remove's the earliest pick up time from the list
     void removeEarliest() {
         if (this->isEmpty()) {
 	    printNoReservationsMessage();
         } else {
-	    // Process head
+	    // Display earliest pick up time
 	    head->data->printPickUpTime();
 	    cout << "The information of this reservation has passed to "
 		 << "a taxi driver.\n";
-	    // Create victim to remove
-	    NodePtr victim = head;
-	    // Set head to next node in the list
-	    head = head->next;
-	    // Check if list is not empty
-	    if (head) {
-		head->prev = NULL;
-	    }
-	    // Remove victim node
-	    delete victim->data;
-	    victim->data = NULL;
-	    victim->next = NULL;
-	    delete victim;
-	    victim = NULL;
-	    // Increment processed
-            processed++;
+	    // Delete head - the node with the earliest pick up time
+	    removeHead();
         }
     }
 private:
@@ -216,6 +177,73 @@ private:
 	// Tell user there are reservations in the list
 	cout << "\nThere is currently no reservation in the "
 	     << "reservation list.\n\n";
+    }
+    // Sets up node to be the first node in an empty list
+    /* Assumes that node is not NULL */
+    void setUpFirstNodeWith(NodePtr node) {
+	// Set node's next to head
+	node->next = head;
+	// Set node's prev to NULL indicating head
+	node->prev = NULL;
+	// Set head and tail to the first node
+	head = node;
+	tail = node;
+    }
+    // Sets tail of the list to given node
+    /* Assumes that tail and node are not NULL */
+    void setTailTo(NodePtr node) {
+	// Point new node's next to NULL indicating tail
+	node->next = NULL;
+	// Point current tail's next to new node
+	tail->next = node;
+	// Point new node's prev to current tail
+	node->prev = tail;
+	// Set tail to new node
+	tail = node;
+    }
+    // Sets head of the list to given node
+    /* Assumes that head and node are not NULL */
+    void setHeadTo(NodePtr node) {
+	// Set node's next to current head
+	node->next = head;
+	// Set node's prev to NULL indicating head
+	node->prev = NULL;
+	// Set current head's prev to node
+	head->prev = node;
+	// Set head to new node
+	head = node;
+    }
+    // Inserts given node before given after node
+    /* Assumes that node and after are not NULL */
+    void insertBefore(NodePtr node, NodePtr after) {
+	// Point after node's prev node's next to new node
+	after->prev->next = node;
+	// Point new node's prev to after node's prev
+	node->prev = after->prev;
+	// Point new node's next to after
+	node->next = after;
+	// Point after's prev to new node
+	after->prev = node;
+    }
+    // Removes and deallocates head and its data
+    /* Assumes that head is not NULL when called */
+    void removeHead() {
+	// Create victim to remove
+	NodePtr victim = head;
+	// Set head to next node in the list
+	head = head->next;
+	// Check if list is not empty
+	if (head) {
+	    head->prev = NULL;
+	}
+	// Remove victim node
+	delete victim->data;
+	victim->data = NULL;
+	victim->next = NULL;
+	delete victim;
+	victim = NULL;
+	// Increment processed
+	processed++;
     }
 };
 
