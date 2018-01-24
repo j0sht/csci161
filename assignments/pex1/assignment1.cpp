@@ -23,6 +23,7 @@ public:
     int getTime();
     // Returns true if time is less than other reservations pick up time
     bool timeIsLessThan(Reservation* other);
+
 private:
     // Reservation member variables
     int hour, minute;
@@ -62,6 +63,7 @@ public:
     void display();
     // Remove's the earliest pick up time from the list
     void removeEarliest();
+
 private:
     // Node definition and convenience typedef for Node*
     struct Node {
@@ -82,7 +84,7 @@ private:
     void printNoReservationsMessage();
     // Sets up node to be the first node in an empty list
     /* Assumes that node is not NULL */
-    void setUpFirstNodeWith(Node* node);
+    void setUpFirstNodeWith(NodePtr node);
     // Sets tail of the list to given node
     /* Assumes that tail and node are not NULL */
     void setTailTo(NodePtr node);
@@ -117,7 +119,7 @@ int Reservation :: getTime() {
     // Return total minutes
     return (hour * 60) + minute;
 }
-bool Reservation :: timeIsLessThan(Reservation* other) {
+bool Reservation :: timeIsLessThan(ReservationPtr other) {
     return this->getTime() < other->getTime();
 }
 // Private reservation methods
