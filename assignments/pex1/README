@@ -32,4 +32,8 @@ requirements.
 The program assumes that the user always enters a character for a command
 and integer numbers for the hours and minutes.
 
-As of testing on January 22, 2018, there are no known bugs.
+UPDATED January 23:
+    - Refactored linked list insertion and removal methods.
+    - Separated class definitions and method implementations.
+
+As of testing on January 23, 2018, there are no known bugs.
