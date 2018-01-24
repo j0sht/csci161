@@ -11,7 +11,8 @@
 #include <iomanip> // for setfill and setw
 using namespace std;
 
-/* DATA MODELS */
+/* CLASS DEFINTIONS */
+// Reservation class definition
 class Reservation {
 public:
     // Sets member variable's value to user provided input
@@ -39,8 +40,66 @@ private:
 // Convenience type defintion for Reservation*
 typedef Reservation* ReservationPtr;
 
+// Linked list class definition
+class LinkedList {
+public:
+    /* Constructor */
+    LinkedList() {
+        head = NULL;
+	tail = NULL;
+        processed = 0;
+    }
+
+    /* Public Methods */
+    // Returns true if list is empty, otherwise false
+    bool isEmpty();
+    // Returns processed count
+    int getProcessed();
+    // Insert's data into list based on data's pick up time
+    //  sorted from earliest to latest pick up time
+    void insert(ReservationPtr data);
+    // Display's list contents
+    void display();
+    // Remove's the earliest pick up time from the list
+    void removeEarliest();
+private:
+    // Node definition and convenience typedef for Node*
+    struct Node {
+	ReservationPtr data;
+	Node *prev;
+	Node *next;
+    };
+    typedef Node* NodePtr;
+
+    /* LinkedList member variables */
+    // Pointers to head and tail of list
+    NodePtr head, tail;
+    // Integer to keep track of processed reservations
+    int processed;
+
+    /* Private Methods */
+    // Informs user there are no reservations in the list
+    void printNoReservationsMessage();
+    // Sets up node to be the first node in an empty list
+    /* Assumes that node is not NULL */
+    void setUpFirstNodeWith(Node* node);
+    // Sets tail of the list to given node
+    /* Assumes that tail and node are not NULL */
+    void setTailTo(NodePtr node);
+    // Sets head of the list to given node
+    /* Assumes that head and node are not NULL */
+    void setHeadTo(NodePtr node);
+    // Inserts given node before given after node
+    /* Assumes that node and after are not NULL */
+    void insertBefore(NodePtr node, NodePtr after);
+    // Removes and deallocates head and its data
+    /* Assumes that head is not NULL when called */
+    void removeHead();
+};
+
+/* CLASS METHOD IMPLEMENTATIONS */
 /* Reservation Method Implementations */
-// Public Methods
+// Public reservation methods
 void Reservation :: userSetValues() {
     hour = getValidHour();
     minute = getValidMinute();
@@ -61,7 +120,7 @@ int Reservation :: getTime() {
 bool Reservation :: timeIsLessThan(Reservation* other) {
     return this->getTime() < other->getTime();
 }
-// Private Methods
+// Private reservation methods
 int Reservation :: getIntInRange(int min, int max, string prompt) {
     // val represents value to be returned
     int val;
@@ -111,58 +170,8 @@ string Reservation :: getValidString(string prompt) {
     return s;
 }
 
-class LinkedList {
-public:
-    // Constructor - intializes member variables
-    LinkedList() {
-        head = NULL;
-	tail = NULL;
-        processed = 0;
-    }
-    // Returns true if list is empty, otherwise false
-    bool isEmpty();
-    // Returns processed count
-    int getProcessed();
-    // Insert's data into list based on data's pick up time
-    //  sorted from earliest to latest pick up time
-    void insert(ReservationPtr data);
-    // Display's list contents
-    void display();
-    // Remove's the earliest pick up time from the list
-    void removeEarliest();
-private:
-    // Node definition and convenience typedef for Node*
-    struct Node {
-	ReservationPtr data;
-	Node *prev;
-	Node *next;
-    };
-    typedef Node* NodePtr;
-    // LinkedList member variables
-    // Pointers to head and tail of list
-    NodePtr head, tail;
-    // Integer to keep track of processed reservations
-    int processed;
-    // Informs user there are no reservations in the list
-    void printNoReservationsMessage();
-    // Sets up node to be the first node in an empty list
-    /* Assumes that node is not NULL */
-    void setUpFirstNodeWith(Node* node);
-    // Sets tail of the list to given node
-    /* Assumes that tail and node are not NULL */
-    void setTailTo(NodePtr node);
-    // Sets head of the list to given node
-    /* Assumes that head and node are not NULL */
-    void setHeadTo(NodePtr node);
-    // Inserts given node before given after node
-    /* Assumes that node and after are not NULL */
-    void insertBefore(NodePtr node, NodePtr after);
-    // Removes and deallocates head and its data
-    /* Assumes that head is not NULL when called */
-    void removeHead();
-};
 /* LinkedList Method Implementations */
-// Public methods
+// Public linked list methods
 bool LinkedList :: isEmpty() {
     return (head == NULL);
 }
@@ -225,7 +234,7 @@ void LinkedList :: removeEarliest() {
 	removeHead();
     }
 }
-// Private Methods
+// Private linked list methods
 void LinkedList :: printNoReservationsMessage() {
     // Tell user there are reservations in the list
     cout << "\nThere is currently no reservation in the "
