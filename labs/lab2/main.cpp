@@ -77,6 +77,7 @@ int main() {
 	TechTermPtr techTerm = new TechTerm(term, definition);
 	list.insert(techTerm);
     }
+    inputStream.close();
     string keyword;
     do {
 	cout << "Enter keyword or 'shutdown' to quit: ";
