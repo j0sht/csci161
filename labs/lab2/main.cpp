@@ -26,7 +26,6 @@ class LinkedList {
 public:
     LinkedList() {
 	head = NULL;
-	count = 0;
     }
     ~LinkedList() {
 	while (head) {
@@ -51,23 +50,6 @@ public:
 	}
 	return NULL;
     }
-    void setCount(int count) {
-	this->count = count;
-    }
-    int getCount() {
-	return count;
-    }
-    void display() {
-	NodePtr tmp = head;
-	cout << "List count: " << count << endl;
-	while (tmp) {
-	    string term, def;
-	    term = tmp->data->getTerm();
-	    def = tmp->data->getDefinition();
-	    cout << term << ": " << def << endl;
-	    tmp = tmp->next;
-	}
-    }
 private:
     struct Node {
 	TechTermPtr data;
@@ -76,7 +58,6 @@ private:
     typedef Node* NodePtr;
     // Instance variables
     NodePtr head;
-    int count;
 };
 
 int main() {
@@ -88,8 +69,7 @@ int main() {
     inputStream >> count;
     string garbage;
     getline(inputStream, garbage);
-    list.setCount(count);
-    for (int i = 0; i < list.getCount(); i++) {
+    for (int i = 0; i < count; i++) {
 	string term, definition;
 	inputStream >> term;
 	inputStream >> garbage;
@@ -99,10 +79,10 @@ int main() {
     }
     string keyword;
     do {
-	cout << "Enter keyword or 'exit' to quit: ";
+	cout << "Enter keyword or 'shutdown' to quit: ";
 	cin >> keyword;
 	getline(cin, garbage);
-	if (keyword == "exit")
+	if (keyword == "shutdown")
 	    continue;
 	TechTermPtr term = list.search(keyword);
 	if (term)
@@ -110,6 +90,6 @@ int main() {
 	else
 	    cout << "Could not find " << keyword
 		 << ". Try another term.\n";
-    } while (keyword != "exit");
+    } while (keyword != "shutdown");
     return 0;
 }
