@@ -4,3 +4,4 @@
 *video*
 *.dSYM
 *xcode-tests*
+*.o
