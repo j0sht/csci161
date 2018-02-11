@@ -28,6 +28,8 @@ Image::Image(string title, int rows, int columns, IntArrayPtr array) {
     this->columns = columns;
     pixels = new IntArrayPtr[rows];
     for (int i = 0; i < rows; i++)
+	pixels[i] = new int[columns];
+    for (int i = 0; i < rows; i++)
 	for (int j = 0; j < columns; j++)
 	    pixels[i][j] = array[i*columns + j];
 }
@@ -37,6 +39,8 @@ Image::Image(const Image &img) {
     rows = img.rows;
     columns = img.columns;
     pixels = new IntArrayPtr[rows];
+    for (int i = 0; i < rows; i++)
+	pixels[i] = new int[columns];
     for (int i = 0; i < rows; i++)
 	for (int j = 0; j < columns; j++)
 	    pixels[i][j] = img.pixels[i][j];
@@ -62,6 +66,8 @@ Image& Image::operator =(const Image &rightSide) {
 	columns = rightSide.columns;
 	pixels = new IntArrayPtr[rows];
 	for (int i = 0; i < rows; i++)
+	    pixels[i] = new int[columns];
+	for (int i = 0; i < rows; i++)
 	    for (int j = 0; j < columns; j++)
 		pixels[i][j] = rightSide.pixels[i][j];
 	return *this;
@@ -70,7 +76,7 @@ Image& Image::operator =(const Image &rightSide) {
 // Addition
 const Image Image::operator +(const Image &i2) const throw (string) {
     if ((rows != i2.rows) || (columns != i2.columns))
-	throw "Incompatible size";
+	throw string("Incompatible size");
     string newTitle = title + " + " + i2.title;
     IntArrayPtr newPixels = new int[rows * columns];
     for (int i = 0; i < rows; i++) {
@@ -96,7 +102,7 @@ bool Image::operator ==(const Image &i2) const {
 
 /* Member functions */
 void Image::histogram(int n) const {
-    cout << "IMPLEMENT HISTOGRAM";
+    cout << "IMPLEMENT HISTOGRAM\n";
 }
 
 /* Image I/O */
@@ -104,10 +110,9 @@ ostream& operator <<(ostream &outs, const Image &img) {
     outs << "TITLE: " << img.title << endl;
     outs << "SIZE: " << img.rows << " by " << img.columns << endl;
     outs << "CONTENT:\n";
-    outs << ios::left << setw(9);
     for (int i = 0; i < img.rows; i++) {
 	for (int j = 0; j < img.columns; j++)
-	    outs << img.pixels[i][j];
+	    outs << setw(7) << left << img.pixels[i][j] << " ";
 	outs << endl;
     }
     return outs;
@@ -115,9 +120,12 @@ ostream& operator <<(ostream &outs, const Image &img) {
 istream& operator >>(istream &ins, Image &img) {
     // Deallocate pixels if it already exists
     if (img.pixels) {
-	for (int i = 0; i < img.rows; i++)
+	for (int i = 0; i < img.rows; i++) {
 	    delete img.pixels[i];
+	    img.pixels[i] = NULL;
+	}
 	delete [] img.pixels;
+	img.pixels = NULL;
     }
     cout << "Enter image title:\n";
     char newLine;
@@ -128,6 +136,8 @@ istream& operator >>(istream &ins, Image &img) {
     ins >> img.rows >> img.columns;
     cout << "Enter content:\n";
     img.pixels = new IntArrayPtr[img.rows];
+    for (int i = 0; i < img.rows; i++)
+	img.pixels[i] = new int[img.columns];
     for (int i = 0; i < img.rows; i++)
 	for (int j = 0; j < img.columns; j++)
 	    ins >> img.pixels[i][j];

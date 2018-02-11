@@ -1,3 +1,6 @@
+#ifndef IMAGE_H
+#define IMAGE_H
+
 #include <iostream>
 #include <string>
 using namespace std;
@@ -31,3 +34,4 @@ private:
     int rows, columns;
     TwoDIntArray pixels;
 };
+#endif
