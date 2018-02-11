@@ -102,7 +102,22 @@ bool Image::operator ==(const Image &i2) const {
 
 /* Member functions */
 void Image::histogram(int n) const {
-    cout << "IMPLEMENT HISTOGRAM\n";
+    cout << "HISTOGRAM:\n";
+    int increment = (256 / n);
+    for (int x = 1, y = n; x <= n; x++, y--) {
+	int lower = (n - y) * increment;
+	int upper = (x * increment) - 1;
+	if ((x == n) && (upper != 255))
+	    upper = 255;
+	int count = 0;
+	for (int i = 0; i < rows; i++)
+	    for (int j = 0; j < columns; j++)
+		if ((pixels[i][j] >= lower) && (pixels[i][j] <= upper))
+		    count++;
+	cout << setw(3) << right << lower << " to "
+	     << setw(3) << right << upper << ": "
+	     << count << endl;
+    }
 }
 
 /* Image I/O */
