@@ -113,7 +113,8 @@ ostream& operator <<(ostream &outs, const Image &img) {
     for (int i = 0; i < img.rows; i++) {
 	for (int j = 0; j < img.columns; j++)
 	    outs << setw(7) << left << img.pixels[i][j] << " ";
-	outs << endl;
+	if (i != (img.rows-1))
+	    outs << endl;
     }
     return outs;
 }
