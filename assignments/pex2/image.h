@@ -33,5 +33,10 @@ private:
     string title;
     int rows, columns;
     TwoDIntArray pixels;
+    // Private member functions
+    // Precondition: rows and columns are initialized to proper values
+    void allocatePixels();
+    // Precondition: rows and columns are initialized to proper values
+    void deallocatePixels();
 };
 #endif

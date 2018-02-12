@@ -26,9 +26,7 @@ Image::Image(string title, int rows, int columns, IntArrayPtr array) {
     this->title = title;
     this->rows = rows;
     this->columns = columns;
-    pixels = new IntArrayPtr[rows];
-    for (int i = 0; i < rows; i++)
-	pixels[i] = new int[columns];
+    allocatePixels();
     for (int i = 0; i < rows; i++)
 	for (int j = 0; j < columns; j++)
 	    pixels[i][j] = array[i*columns + j];
@@ -38,18 +36,46 @@ Image::Image(const Image &img) {
     title = img.title;
     rows = img.rows;
     columns = img.columns;
-    pixels = new IntArrayPtr[rows];
-    for (int i = 0; i < rows; i++)
-	pixels[i] = new int[columns];
+    allocatePixels();
     for (int i = 0; i < rows; i++)
 	for (int j = 0; j < columns; j++)
 	    pixels[i][j] = img.pixels[i][j];
 }
 // Destructor
 Image::~Image() {
+    deallocatePixels();
+}
+
+/* Member functions */
+// Public member functions
+void Image::histogram(int n) const {
+    cout << "HISTOGRAM:\n";
+    int increment = (256 / n);
+    for (int x = 1, y = n; x <= n; x++, y--) {
+	int lower = (n - y) * increment;
+	int upper = (x == n) ? 255 : (x * increment) - 1;
+	int count = 0;
+	for (int i = 0; i < rows; i++)
+	    for (int j = 0; j < columns; j++)
+		if ((pixels[i][j] >= lower) && (pixels[i][j] <= upper))
+		    count++;
+	cout << setw(3) << right << lower << " to "
+	     << setw(3) << right << upper << ": "
+	     << count << endl;
+    }
+}
+// Private member functions
+void Image::allocatePixels() {
+    pixels = new IntArrayPtr[rows];
     for (int i = 0; i < rows; i++)
-	delete pixels[i];
-    delete [] pixels;
+	pixels[i] = new int[columns];
+}
+void Image::deallocatePixels() {
+    if (pixels) {
+	for (int i = 0; i < rows; i++)
+	    delete pixels[i];
+	delete [] pixels;
+    }
 }
 
 /* Operators */
@@ -59,14 +85,10 @@ Image& Image::operator =(const Image &rightSide) {
 	return *this;
     } else {
 	title = rightSide.title;
-	for (int i = 0; i < rows; i++)
-	    delete pixels[i];
-	delete [] pixels;
+	deallocatePixels();
 	rows = rightSide.rows;
 	columns = rightSide.columns;
-	pixels = new IntArrayPtr[rows];
-	for (int i = 0; i < rows; i++)
-	    pixels[i] = new int[columns];
+	allocatePixels();
 	for (int i = 0; i < rows; i++)
 	    for (int j = 0; j < columns; j++)
 		pixels[i][j] = rightSide.pixels[i][j];
@@ -100,24 +122,6 @@ bool Image::operator ==(const Image &i2) const {
     return true;
 }
 
-/* Member functions */
-void Image::histogram(int n) const {
-    cout << "HISTOGRAM:\n";
-    int increment = (256 / n);
-    for (int x = 1, y = n; x <= n; x++, y--) {
-	int lower = (n - y) * increment;
-	int upper = (x == n) ? 255 : (x * increment) - 1;
-	int count = 0;
-	for (int i = 0; i < rows; i++)
-	    for (int j = 0; j < columns; j++)
-		if ((pixels[i][j] >= lower) && (pixels[i][j] <= upper))
-		    count++;
-	cout << setw(3) << right << lower << " to "
-	     << setw(3) << right << upper << ": "
-	     << count << endl;
-    }
-}
-
 /* Image I/O */
 ostream& operator <<(ostream &outs, const Image &img) {
     outs << "TITLE: " << img.title << endl;
@@ -133,14 +137,7 @@ ostream& operator <<(ostream &outs, const Image &img) {
 }
 istream& operator >>(istream &ins, Image &img) {
     // Deallocate pixels if it already exists
-    if (img.pixels) {
-	for (int i = 0; i < img.rows; i++) {
-	    delete img.pixels[i];
-	    img.pixels[i] = NULL;
-	}
-	delete [] img.pixels;
-	img.pixels = NULL;
-    }
+    img.deallocatePixels();
     cout << "Enter image title:\n";
     char newLine;
     if (ins.peek() == '\n')
@@ -148,10 +145,8 @@ istream& operator >>(istream &ins, Image &img) {
     getline(ins, img.title);
     cout << "Enter rows and columns:\n";
     ins >> img.rows >> img.columns;
+    img.allocatePixels();
     cout << "Enter content:\n";
-    img.pixels = new IntArrayPtr[img.rows];
-    for (int i = 0; i < img.rows; i++)
-	img.pixels[i] = new int[img.columns];
     for (int i = 0; i < img.rows; i++)
 	for (int j = 0; j < img.columns; j++)
 	    ins >> img.pixels[i][j];
