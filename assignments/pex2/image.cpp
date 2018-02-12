@@ -73,7 +73,7 @@ void Image::allocatePixels() {
 void Image::deallocatePixels() {
     if (pixels) {
 	for (int i = 0; i < rows; i++)
-	    delete pixels[i];
+	    delete [] pixels[i];
 	delete [] pixels;
     }
 }
