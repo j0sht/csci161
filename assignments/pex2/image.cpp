@@ -81,7 +81,8 @@ void Image::deallocatePixels() {
 /* Operators */
 // Assignment
 Image& Image::operator =(const Image &rightSide) {
-    if (this == &rightSide) { // check if same object is on both sides of assignment
+    // check if same object is on both sides of assignment
+    if (this == &rightSide) {
 	return *this;
     } else {
 	title = rightSide.title;
@@ -109,7 +110,9 @@ const Image Image::operator +(const Image &i2) const throw (string) {
 	    newPixels[i*columns + j] = average;
 	}
     }
-    return Image(newTitle, rows, columns, newPixels);
+    Image newImg = Image(newTitle, rows, columns, newPixels);
+    delete [] newPixels;
+    return newImg;
 }
 // Equality operator
 bool Image::operator ==(const Image &i2) const {
