@@ -106,9 +106,7 @@ void Image::histogram(int n) const {
     int increment = (256 / n);
     for (int x = 1, y = n; x <= n; x++, y--) {
 	int lower = (n - y) * increment;
-	int upper = (x * increment) - 1;
-	if ((x == n) && (upper != 255))
-	    upper = 255;
+	int upper = (x == n) ? 255 : (x * increment) - 1;
 	int count = 0;
 	for (int i = 0; i < rows; i++)
 	    for (int j = 0; j < columns; j++)
