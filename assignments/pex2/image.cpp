@@ -100,18 +100,19 @@ Image& Image::operator =(const Image &rightSide) {
 const Image Image::operator +(const Image &i2) const throw (string) {
     if ((rows != i2.rows) || (columns != i2.columns))
 	throw string("Incompatible size");
-    string newTitle = title + " + " + i2.title;
-    IntArrayPtr newPixels = new int[rows * columns];
+    Image newImg;
+    newImg.title = title + " + " + i2.title;
+    newImg.rows = rows;
+    newImg.columns = columns;
+    newImg.allocatePixels();
     for (int i = 0; i < rows; i++) {
 	for (int j = 0; j < columns; j++) {
 	    int thisPixel = pixels[i][j];
 	    int otherPixel = i2.pixels[i][j];
 	    int average = (thisPixel + otherPixel) / 2;
-	    newPixels[i*columns + j] = average;
+	    newImg.pixels[i][j] = average;
 	}
     }
-    Image newImg = Image(newTitle, rows, columns, newPixels);
-    delete [] newPixels;
     return newImg;
 }
 // Equality operator
