@@ -7,11 +7,13 @@ int main() {
     Image img1;
     bool condition = ((img1.getRows()) == 0 && (img1.getColumns() == 0) &&
 		      (img1.getTitle() == ""));
-    if (condition)
-	cout << "'Image 1' initialized to 0 rows, 0 columns, and an empty title\n";
+    if (condition) // Should be true
+	cout << "'Image 1' initialized to 0 rows, 0 columns, "
+	     << "and an empty title\n";
     else
 	cout << "img1 was not initialized to to expected values\n";
 
+    // Test the four parameter constructor
     IntArrayPtr a = new int[3 * 3];
     for (int i = 0; i < 3; i++)
 	for (int j = 0; j < 3; j++)
@@ -39,7 +41,7 @@ int main() {
     cout << img3 << endl << endl;
 
     try {
-	// Test the addition operator
+	// Test the addition and assignment operator
 	img1 = img2 + img3;
 	cout << img1 << endl << endl;
 	IntArrayPtr c = new int[3 * 3];
@@ -68,7 +70,12 @@ int main() {
     cout << "You entered:\n" << userImage << endl << endl;
 
     // Test histogram
-    userImage.histogram(4);
-    
+    for (int i = 2; i <= 16; i++) {
+	cout << "=======================\n"
+	     << "Histogram Value: " << i << endl
+	     << "=======================\n";
+	userImage.histogram(i);
+    }
+
     return 0;
 }
