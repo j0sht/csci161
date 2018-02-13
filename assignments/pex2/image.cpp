@@ -4,18 +4,6 @@
 #include <iomanip>
 using namespace std;
 
-/* Static variables */
-int Image::maxRows = 1024;
-int Image::maxColumns = 1024;
-
-/* Static methods */
-int Image::getMaxRows() {
-    return maxRows;
-}
-int Image::getMaxColumns() {
-    return maxColumns;
-}
-
 /* Constructors */
 Image::Image() {
     title = "";
@@ -44,6 +32,20 @@ Image::Image(const Image &img) {
 // Destructor
 Image::~Image() {
     deallocatePixels();
+}
+
+/* Getters/Setters */
+string Image::getTitle() {
+    return title;
+}
+void Image::setTitle(string s) {
+    title = s;
+}
+int Image::getRows() {
+    return rows;
+}
+int Image::getColumns() {
+    return columns;
 }
 
 /* Member functions */
