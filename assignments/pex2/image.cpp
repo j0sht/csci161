@@ -1,3 +1,12 @@
+/*
+ * File: image.cpp
+ * Author: Joshua Tate
+ * Date: February 10, 2018
+ * Updated: February 14, 2018
+ *
+ * Purpose:
+ *    - This file contains the implementation of the Image class.
+ */
 #include "image.h"
 #include <iostream>
 #include <string>

@@ -1,0 +1,61 @@
+pex2 is a C++ program that can be compiled with the command:
+
+    $ make
+
+Once compiled, the program can simply be run with:
+
+    $ ./pex2
+
+Where '$' represents the terminal prompt, and assuming image.h, image.cpp,
+main.cpp and Makefile are in the directory in which the command is run.
+
+Introduction:
+    - The program pex2 consists of a main program that tests the
+      functionality of the Image class.
+    - Image is an object that represents a grayscale image.
+
+Design:
+    - The image class consists of a title (a string), the number of rows
+      and columns (each int's), and a dynamically allocated two dimensional
+      array of int's that each represent the individual pixels.
+    - The maximum number of rows and columns are assumed to be 1024 each.
+    - The values of the pixels are assumed to be between 0 and 255,
+      inclusive.
+    - Users of the Image class can add two images together to form
+      a composite image object with '+' operator, and view number of pixels
+      in a range with the histogram function.
+    - Users can also use the Image class naturally with operators such as
+      '<<', '>>', '=', and '==' (tests for same content, regardless of title).
+
+Implementation:
+    - The image class uses a dynamically allocated two-dimensional array
+      as its concrete data structure to store the individual pixels of the
+      image.
+    - The advantage of using this type of structure is that it easy to
+      conceptualize and access pixels when represented as a two-d array,
+      and the size of the array, and its inner arrays, can be determined
+      at runtime instead of compile time. Only the amount of space needed
+      is allocated.
+    - The disadvantage of using a dynamically allocated array is that more
+      care is needed to ensure proper allocation/deallocation of heap space
+      to avoid memory leaks.
+
+Accomplishment:
+    - The image class implements all required methods of the assignment,
+      as well as some simple getters/setters.
+
+Testing:
+    - Before creating a custom main program, the Image class was tested
+      with the sample main program on the assignment page. The class
+      worked well with the sample main program. The custom main program
+      included in this submission tests all the required constructors
+      and methods of the Image class.
+
+Known Bugs:
+    - As of testing on February 14, 2018, there are no known bugs.
+
+NOTE:
+    - The main program included in the assignment uses a file 'test.txt'
+      to read as input into an Image class. 'test.txt' must be included in
+      the same directory as the program when it is run, in order to run
+      successfully.

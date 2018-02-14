@@ -1,4 +1,4 @@
-pex2: main.o image.o
+pex2: image.o main.o
 	g++ -Wall main.o image.o -o pex2
 main.o: main.cpp image.h
 	g++ -c main.cpp
