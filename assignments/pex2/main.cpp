@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include "image.h"
 using namespace std;
 
@@ -66,7 +67,10 @@ int main() {
 
     // Test input operator
     Image userImage;
-    cin >> userImage;
+    ifstream inputStream;
+    inputStream.open("test.txt");
+    inputStream >> userImage;
+    inputStream.close();
     cout << "You entered:\n" << userImage << endl << endl;
 
     // Test histogram
