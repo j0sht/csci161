@@ -17,11 +17,7 @@ using namespace std;
 class LinkedList {
 public:
     /* Constructor */
-    LinkedList() {
-        head = NULL;
-	tail = NULL;
-        processed = 0;
-    }
+    LinkedList();
     /* Public Methods */
     // Returns true if list is empty, otherwise false
     bool isEmpty();

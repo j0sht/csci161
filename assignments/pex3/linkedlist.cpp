@@ -12,6 +12,13 @@
 #include "linkedlist.h"
 using namespace std;
 
+// Constructor
+LinkedList::LinkedList() {
+    head = NULL;
+    tail = NULL;
+    processed = 0;
+}
+
 // Public methods
 bool LinkedList::isEmpty() {
     return (head == NULL);
