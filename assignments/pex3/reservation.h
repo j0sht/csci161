@@ -14,21 +14,22 @@ using namespace std;
 
 class Reservation {
 public:
+    // Constructors
     Reservation();
     Reservation(int hour, int minute, string location, string contact);
-    // Sets member variable's value to user provided input
-    void userSetValues();
-    // Displays reservation's pick up time
-    void printPickUpTime();
-    // Returns pick up time
+    // Getters
+    // Returns total time
     int getTime();
-    // Returns hour and minute, respectively
     int getHour();
     int getMinute();
-    // Returns location and contact, respectively
     string getLocation();
     string getContact();
-    // Returns true if time is less than other reservations pick up time
+    // Methods
+    // Sets member variable's value to user provided input
+    void userSetValues();
+    // Displays reservation's pick up time and associated data
+    void displayPickUpTime();
+    // Returns true if time is less than other reservations time
     bool timeIsLessThan(Reservation* other);
 private:
     // Reservation member variables

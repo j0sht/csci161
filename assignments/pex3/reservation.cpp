@@ -5,7 +5,7 @@
  * Updated: February 27, 2018
  *
  * Purpose:
- *    - This file contains the definition of a Reservation
+ *    - This file contains the implementation of a Reservation
  */
 #include <iostream>
 #include <iomanip>
@@ -17,8 +17,7 @@ Reservation::Reservation() {
     hour = minute = 0;
     location = contact = "";
 }
-Reservation::Reservation(int hour, int minute,
-			 string location, string contact) {
+Reservation::Reservation(int hour, int minute, string location, string contact) {
     this->hour = hour;
     this->minute = minute;
     this->location = location;
@@ -31,7 +30,7 @@ void Reservation::userSetValues() {
     location = userValidString("Please enter the pick up location\n");
     contact = userValidString("Please enter the name of the contact\n");
 }
-void Reservation::printPickUpTime() {
+void Reservation::displayPickUpTime() {
     cout << "    pick up time: "
 	 << hour << ":" << setfill('0') << setw(2) << minute << endl
 	 << "pick up location: " << location << endl

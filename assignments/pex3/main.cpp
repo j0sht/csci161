@@ -17,40 +17,35 @@ const string filename = "reservations.txt";
 // Display's welcome message to user
 void welcome();
 // Display's list of acceptable commands to user
-void printMenu();
-// Get user's command character
+void displayMenu();
 char getCommand();
-// Submit new taxi reservation based on user's input
+// Submit newly allocated taxi reservation to today or tomorrow's list
 void submitNewReservation(ReservationList &today,
 			  ReservationList &tomorrow);
-// Displays contents of list
-void displayListContents(const ReservationList &list);
-// Pick's up earliest passenger from list
+// Get's earliest reservation from list, displays it's reservations data
+//  and deallocates it
 void pickUpFrom(ReservationList &list);
+void displayContentsOf(const ReservationList &list);
 // Checks if list is empty, then explains to user that program cannot terminate
 //  if it is not empty, else displays the proccessed count. Returns true
 //  if the list is empty, otherwise false.
 bool attemptToTerminateWith(const ReservationList &list);
-// Tell user that reservations exist
-void printReservationsExistMessage();
-// Display's processed reservations
-void printProcessedReservationCount(const ReservationList& list);
-// Check if reservation is for today or tomorrow
+void displayReservationsExistMessage();
+void displayProcessedReservationCount(const ReservationList& list);
+// Asks user if reservation is for today or tomorrow. Returns true
+//  if reservation is for today.
 bool reservationForToday();
 
 /* MAIN */
 int main() {
-    // running is set to false when user attempts to terminate program
-    //  and the list is empty
     bool running = true;
     ReservationList todaysList, tomorrowsList;
     welcome();
     if (!todaysList.readReservations(filename))
 	cout << "Can't open " << filename << " to read data.\n"
 	     << "Assuming that there is no reservation made yesterday.\n";
-    printMenu();
+    displayMenu();
     while (running) {
-	// Get user command and perform appropriate action
         char cmd = getCommand();
         switch (cmd) {
 	case 's': case 'S':
@@ -60,10 +55,10 @@ int main() {
 	    pickUpFrom(todaysList);
 	    break;
 	case 'l': case 'L':
-	    displayListContents(todaysList);
+	    displayContentsOf(todaysList);
 	    break;
 	case 'h': case 'H':
-	    printMenu();
+	    displayMenu();
 	    break;
 	case 't': case 'T':
 	    running = attemptToTerminateWith(todaysList);
@@ -81,20 +76,15 @@ void welcome() {
     cout << "\n*** Welcome to Taxi Reservation Management System ***\n\n";
 }
 char getCommand() {
-    // Prompt user to enter command
     cout << "-----------------------------------\n";
     cout << "Please enter your command: ";
-    // Get command from stdin
     char cmd;
     cin >> cmd;
-    // Remove extraneous info in stdin buffer
     string garbage;
     getline(cin, garbage);
-    // Return entered command
     return cmd;
 }
-void printMenu() {
-    // Display available options to user
+void displayMenu() {
     cout << endl
 	 << "Enter S to submit a new reservation\n"
 	 << "   or P to pick up the passenger(s)\n"
@@ -104,9 +94,7 @@ void printMenu() {
 }
 void submitNewReservation(ReservationList &todaysList,
 			  ReservationList &tomorrowsList) {
-    // Create reservation
     ReservationPtr data = new Reservation;
-    // Get user to set values for reservation
     data->userSetValues();
     if (reservationForToday()) {
 	todaysList.insert(data);
@@ -116,37 +104,38 @@ void submitNewReservation(ReservationList &todaysList,
 	cout << "Reservation successfully added to tomorrow's list.\n";
     }
 }
-void displayListContents(const ReservationList& list) {
+void pickUpFrom(ReservationList& list) {
+    try {
+        ReservationPtr data = list.removeEarliest();
+	data->displayPickUpTime();
+	cout << "The information of this reservation has passed to "
+	     << "a taxi driver.\n";
+	delete data;
+    } catch (const ReservationListEmpty& e){
+	cout << e << endl;
+    }
+}
+void displayContentsOf(const ReservationList& list) {
     try {
         list.display();
     } catch (const ReservationListEmpty& e) {
-	cout << e.description() << endl;
-    }
-}
-void pickUpFrom(ReservationList& list) {
-    try {
-        list.removeEarliest();
-    } catch (const ReservationListEmpty& e){
-	cout << e.description() << endl;
+	cout << e << endl;
     }
 }
 bool attemptToTerminateWith(const ReservationList& list) {
     bool notEmpty = !list.isEmpty();
     if (notEmpty) {
-	printReservationsExistMessage();
+	displayReservationsExistMessage();
     } else {
-	printProcessedReservationCount(list);
+	displayProcessedReservationCount(list);
     }
     return notEmpty;
 }
-void printProcessedReservationCount(const ReservationList& list) {
-    // Show user processed reservation count
+void displayProcessedReservationCount(const ReservationList& list) {
     cout << "The total number of reservations processed is "
 	 << list.getProcessed() << ".\n";
 }
-void printReservationsExistMessage() {
-    // Inform user that the program cannot terminate until
-    //  there are no more reservations
+void displayReservationsExistMessage() {
     cout << "\nProgram can not terminate.\n"
 	 << "There are still reservations in the reservations list.\n";
 }

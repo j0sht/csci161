@@ -13,11 +13,12 @@
 #include "reservationlist.h"
 using namespace std;
 
-// Error class
-string ReservationListEmpty::description() const {
-    string s = "\nThere is currently no reservation in the ";
-    s += "reservation list.\n";
-    return s;
+// Error Class output overload
+ostream& operator <<(ostream& outs, const ReservationListEmpty &e) {
+   string s = "\nThere is currently no reservation in the ";
+   s += "reservation list.\n";
+   outs << s;
+   return outs;
 }
 
 // Constructor
@@ -27,8 +28,10 @@ ReservationList::ReservationList() {
     processed = count = 0;
 }
 ReservationList::~ReservationList() {
-    while (head)
-	removeHead();
+    while (head) {
+	ReservationPtr data = removeHead();
+	delete data;
+    }
 }
 // Public methods
 bool ReservationList::isEmpty() const {
@@ -41,20 +44,13 @@ int ReservationList::getCount() const {
     return count;
 }
 void ReservationList::insert(ReservationPtr data) {
-    // Create new node
     NodePtr node = new Node;
-    // Add node data
     node->data = data;
-    // Check if it is the first element
     if (!head)
 	setUpFirstNodeWith(node);
-    // Not the first element
     else {
-	// Create tmp node to iterate through list,
-	//  starting with current head
 	NodePtr tmp = head;
-	// Iterate through list while tmp is not NULL and
-	//  tmp's time is less than the new data's time
+	// Search for position based on pick up time
 	while (tmp && tmp->data->timeIsLessThan(data))
 	    tmp = tmp->next;
 	// Check if it is the back of the list
@@ -75,25 +71,19 @@ void ReservationList::insert(ReservationPtr data) {
 void ReservationList::display() const throw (ReservationListEmpty) {
     if (isEmpty())
 	throw ReservationListEmpty();
-    // Print pick up time for each node in the list
     NodePtr tmp = head;
     while (tmp) {
-	tmp->data->printPickUpTime();
+	tmp->data->displayPickUpTime();
 	cout << "------------\n";
 	tmp = tmp->next;
     }
 }
-void ReservationList::removeEarliest() throw (ReservationListEmpty) {
+ReservationPtr ReservationList::removeEarliest() throw (ReservationListEmpty) {
     if (isEmpty())
 	throw ReservationListEmpty();
-    // Display earliest pick up time
-    head->data->printPickUpTime();
-    cout << "The information of this reservation has passed to "
-	 << "a taxi driver.\n";
-    // Delete head - the node with the earliest pick up time
-    removeHead();
-    // Increment processed
+    ReservationPtr data = removeHead();
     processed++;
+    return data;
 }
 bool ReservationList::readReservations(string filename) {
     ifstream inputStream;
@@ -135,57 +125,39 @@ void ReservationList::writeReservations(string filename) {
 }
 // Private methods
 void ReservationList::setUpFirstNodeWith(NodePtr node) {
-    // Set node's next to head
     node->next = head;
-    // Set node's prev to NULL indicating head
     node->prev = NULL;
-    // Set head and tail to the first node
     head = node;
     tail = node;
 }
 void ReservationList::setTailTo(NodePtr node) {
-    // Point new node's next to NULL indicating tail
     node->next = NULL;
-    // Point current tail's next to new node
     tail->next = node;
-    // Point new node's prev to current tail
     node->prev = tail;
-    // Set tail to new node
     tail = node;
 }
 void ReservationList::setHeadTo(NodePtr node) {
-    // Set node's next to current head
     node->next = head;
-    // Set node's prev to NULL indicating head
     node->prev = NULL;
-    // Set current head's prev to node
     head->prev = node;
-    // Set head to new node
     head = node;
 }
 void ReservationList::insertBefore(NodePtr node, NodePtr after) {
-    // Point after node's prev node's next to new node
     after->prev->next = node;
-    // Point new node's prev to after node's prev
     node->prev = after->prev;
-    // Point new node's next to after
     node->next = after;
-    // Point after's prev to new node
     after->prev = node;
 }
-void ReservationList::removeHead() {
-    // Create victim to remove
+ReservationPtr ReservationList::removeHead() {
     NodePtr victim = head;
-    // Set head to next node in the list
     head = head->next;
-    // Check if list is not empty
     if (head)
-	// Set new head prev to NULL indicating head of list
 	head->prev = NULL;
-    // Remove victim node
-    delete victim->data;
+    ReservationPtr data = victim->data;
     victim->data = NULL;
     victim->next = NULL;
     delete victim;
     victim = NULL;
+    count--;
+    return data;
 }

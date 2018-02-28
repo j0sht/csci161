@@ -16,33 +16,31 @@ using namespace std;
 // Error class
 class ReservationListEmpty {
 public:
-    string description() const;
+    friend ostream& operator <<(ostream& outs, const ReservationListEmpty& e);
 };
 
 // Linked list class definition
 class ReservationList {
 public:
-    /* Constructor & Destructor */
+    // Constructor & Destructor
     ReservationList();
     ~ReservationList();
-    /* Public Methods */
+    // Propert getters
     // Returns true if list is empty, otherwise false
     bool isEmpty() const;
-    // Returns processed count
     int getProcessed() const;
-    // Returns number of reservations in list
+    // Returns number of reservations currently in list
     int getCount() const;
     // Insert's data into list based on data's pick up time
     //  sorted from earliest to latest pick up time
     void insert(ReservationPtr data);
-    // Display's list contents
     void display() const throw (ReservationListEmpty);
     // Remove's the earliest pick up time from the list
-    void removeEarliest() throw (ReservationListEmpty);
+    //  and returns its data
+    ReservationPtr removeEarliest() throw (ReservationListEmpty);
     // Reads in reservations if they exist. Returns true if
     //  filename was opened successfully else false
     bool readReservations(string filename);
-    // Write reservations in list to filename
     void writeReservations(string filename);
 private:
     // Node definition and convenience typedef for Node*
@@ -52,28 +50,19 @@ private:
 	Node *next;
     };
     typedef Node* NodePtr;
-    /* ReservationList member variables */
-    // Pointers to head and tail of list
+    // Member variables
     NodePtr head, tail;
-    // Integer to keep track of processed reservations
-    int processed;
-    // Integer to keep track of list count
-    int count;
-    /* Private Methods */
-    // Sets up node to be the first node in an empty list
+    int processed, count;
     /* Assumes that node is not NULL */
     void setUpFirstNodeWith(NodePtr node);
-    // Sets tail of the list to given node
     /* Assumes that tail and node are not NULL */
     void setTailTo(NodePtr node);
-    // Sets head of the list to given node
     /* Assumes that head and node are not NULL */
     void setHeadTo(NodePtr node);
-    // Inserts given node before given after node
     /* Assumes that node and after are not NULL */
     void insertBefore(NodePtr node, NodePtr after);
-    // Removes and deallocates head and its data
+    // Removes and deallocates head and returns pointer to its data
     /* Assumes that head is not NULL when called */
-    void removeHead();
+    ReservationPtr removeHead();
 };
 #endif
