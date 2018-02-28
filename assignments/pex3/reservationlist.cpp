@@ -2,7 +2,7 @@
  * File: reservationlist.cpp
  * Author: Joshua Tate
  * Date: February 27, 2018
- * Updated: February 27, 2018
+ * Updated: February 28, 2018
  *
  * Purpose:
  *    - This file contains the implementation of a ReservationList
@@ -26,13 +26,14 @@ ReservationList::ReservationList() {
     tail = NULL;
     processed = count = 0;
 }
+// Destructor
 ReservationList::~ReservationList() {
     while (head) {
 	ReservationPtr data = removeHead();
 	delete data;
     }
 }
-// Public methods
+// Getters
 bool ReservationList::empty() const {
     return (head == NULL);
 }
@@ -42,6 +43,7 @@ int ReservationList::getProcessed() const {
 int ReservationList::getCount() const {
     return count;
 }
+// Public methods
 void ReservationList::insert(ReservationPtr data) {
     NodePtr node = new Node;
     node->data = data;
@@ -93,9 +95,8 @@ bool ReservationList::readReservationsFrom(string filename) {
     inputStream >> numRecords;
     for (int i = 0; i < numRecords; i++) {
 	int hour, minute;
-	string location, contact;
 	inputStream >> hour >> minute;
-	string garbage;
+	string garbage, location, contact;
 	getline(inputStream, garbage);
 	getline(inputStream, location);
 	getline(inputStream, contact);

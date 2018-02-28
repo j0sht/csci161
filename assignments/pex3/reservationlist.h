@@ -2,7 +2,7 @@
  * File: reservationlist.h
  * Author: Joshua Tate
  * Date: February 27, 2018
- * Updated: February 27, 2018
+ * Updated: February 28, 2018
  *
  * Purpose:
  *    - This file contains the definition of a ReservationList
@@ -25,7 +25,7 @@ public:
     // Constructor & Destructor
     ReservationList();
     ~ReservationList();
-    // Propert getters
+    // Property getters
     // Returns true if list is empty, otherwise false
     bool empty() const;
     int getProcessed() const;
