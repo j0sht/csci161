@@ -1,5 +1,5 @@
 /*
- * File: linkedlist.h
+ * File: reservationlist.h
  * Author: Joshua Tate
  * Date: February 27, 2018
  * Updated: February 27, 2018

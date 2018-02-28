@@ -135,11 +135,10 @@ bool attemptToTerminateWith(const ReservationList& list) {
     return notEmpty;
 }
 bool reservationForToday() {
-    string prompt = "Is the reservation for today (Y) or tomorrow (N)?\n";
     bool valid = false;
     string s;
     do {
-	cout << prompt;
+	cout << "Is the reservation for today (Y) or tomorrow (N)?\n";
 	getline(cin, s);
 	valid = (!s.empty() && (s == "N" || s == "n" ||
 				s == "Y" || s == "y"));

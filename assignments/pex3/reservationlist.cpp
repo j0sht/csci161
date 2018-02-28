@@ -1,5 +1,5 @@
 /*
- * File: linkedlist.cpp
+ * File: reservationlist.cpp
  * Author: Joshua Tate
  * Date: February 27, 2018
  * Updated: February 27, 2018
@@ -15,10 +15,9 @@ using namespace std;
 
 // Error Class output overload
 ostream& operator <<(ostream& outs, const ReservationListEmpty &e) {
-   string s = "\nThere is currently no reservation in the ";
-   s += "reservation list.\n";
-   outs << s;
-   return outs;
+    outs << "\nThere is currently no reservation in the "
+	 << "reservation list.\n";
+    return outs;
 }
 
 // Constructor
@@ -46,7 +45,7 @@ int ReservationList::getCount() const {
 void ReservationList::insert(ReservationPtr data) {
     NodePtr node = new Node;
     node->data = data;
-    if (!head)
+    if (empty())
 	setUpFirstNodeWith(node);
     else {
 	NodePtr tmp = head;
