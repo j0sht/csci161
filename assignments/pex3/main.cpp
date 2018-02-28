@@ -41,7 +41,7 @@ int main() {
     bool running = true;
     ReservationList todaysList, tomorrowsList;
     welcome();
-    if (!todaysList.readReservationsTo(filename))
+    if (!todaysList.readReservationsFrom(filename))
 	cout << "Can't open " << filename << " to read data.\n"
 	     << "Assuming that there is no reservation made yesterday.\n";
     displayMenu();
