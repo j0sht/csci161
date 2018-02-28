@@ -5,7 +5,7 @@
  * Updated: February 28, 2018
  *
  * Purpose: Program to help the dispatcher in a taxi company to manage
- *          taxi reservations in one day.
+ *          taxi reservations for today and tomorrow.
  */
 #include <iostream>
 #include "reservation.h"
@@ -28,9 +28,9 @@ void submitNewReservation(ReservationList& today,
 //  and deallocates it
 void pickUpFrom(ReservationList& list);
 void displayContentsOf(const ReservationList& list);
-// Checks if list is empty, then explains to user that program cannot terminate
-//  if it is not empty, else displays the proccessed count. Returns true
-//  if the list is not empty, otherwise false.
+// Checks if list is empty, then explains to user that program cannot
+//  terminate if it is not empty, else displays the proccessed count.
+// Returns true if the list is not empty, otherwise false.
 bool attemptToTerminateWith(const ReservationList& list);
 // Asks user if reservation is for today or tomorrow. Returns true
 //  if reservation is for today, else false.

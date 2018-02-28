@@ -2,7 +2,7 @@
  * File: reservation.cpp
  * Author: Joshua Tate
  * Date: February 27, 2018
- * Updated: February 27, 2018
+ * Updated: February 28, 2018
  *
  * Purpose:
  *    - This file contains the implementation of a Reservation
@@ -17,7 +17,8 @@ Reservation::Reservation() {
     hour = minute = 0;
     location = contact = "";
 }
-Reservation::Reservation(int hour, int minute, string location, string contact) {
+Reservation::Reservation(int hour, int minute,
+			 string location, string contact) {
     this->hour = hour;
     this->minute = minute;
     this->location = location;

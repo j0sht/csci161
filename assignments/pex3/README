@@ -1,0 +1,59 @@
+pex3 is a C++ program that can be compiled with the command:
+
+    $ make
+
+Once compiled, the program can simply be run with:
+
+    $ ./pex3
+
+Where '$' represents the terminal prompt, and assuming reservation.h,
+reservation.cpp, reservationlist.h, reservationlist.cpp, main.cpp, and
+Makefile are in the directory in which the command is run.
+
+Overview:
+    - This program builds upon a previous program in which a taxi dispatch
+      can manage taxi reservations. This program allows the taxi dispatch
+      to manage reservations for today (when the program is run), and
+      tomorrow, by saving the reservations for tomorrow to a file which can
+      be accessed the next time the program is run.
+
+Design:
+    - The program consists of two primary classes, and an accompanying
+      error class.
+    - The Reservation class consists of data related to a reservation, which
+      includes the hour and minute of the pick up time, and a location and
+      contact. The class also has some methods that allow the user to set
+      appropriate values, and print the data to the terminal.
+    - The ReservationList class is a doubly-linked list that holds instances
+      of the Reservation class. A user of this class can insert a reservation,
+      remove the earliest reservation from the list, and read/write
+      reservations from/to a file. The user can also access information from
+      the class including it's processed count (how many have been removed),
+      and its current count (number of reservations currently in the list), and
+      print all reservations currently in the list to the terminal.
+    - The ReservationListEmpty class is a simple error class thrown by
+      the ReservationList when the user attempts to remove the earliest
+      reservation or display the list when it is currently empty. The error
+      class overloads the '<<' operator so that when caught, one can simply
+      output the error to the terminal.
+
+Implementation:
+    - The ReservationList class uses a pointer-based data structure in the
+      form of a doubly-linked list.
+    - The advantage of using this kind of data structure is that insertion
+      and removal is quick and efficient.
+    - A disadvantage of using this kind of data structure is that memory
+      must be managed manually and must be done carefully to avoid
+      memory leaks that can cause the program to crash if not managed
+      properly.
+
+Accomplishment:
+    - This program satisfies all requirements of the assignment.
+
+Testing:
+    - All methods of the classes have been sufficiently tested and passed
+      each test. The program was run with identical input mimicking the sample
+      run on the assignment page and produced identical output.
+
+Known Bugs:
+    - As of testing on February 28, 2018, there are no known bugs.

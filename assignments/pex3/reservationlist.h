@@ -16,7 +16,8 @@ using namespace std;
 // Error class
 class ReservationListEmpty {
 public:
-    friend ostream& operator <<(ostream& outs, const ReservationListEmpty& e);
+    friend ostream& operator <<(ostream& outs,
+				const ReservationListEmpty& e);
 };
 
 // Linked list class definition

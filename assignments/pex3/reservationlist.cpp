@@ -79,7 +79,8 @@ void ReservationList::display() const throw (ReservationListEmpty) {
 	tmp = tmp->next;
     }
 }
-ReservationPtr ReservationList::removeEarliest() throw (ReservationListEmpty) {
+ReservationPtr ReservationList::removeEarliest()
+    throw (ReservationListEmpty) {
     if (empty())
 	throw ReservationListEmpty();
     ReservationPtr data = removeHead();
@@ -151,8 +152,13 @@ void ReservationList::insertBefore(NodePtr node, NodePtr after) {
 ReservationPtr ReservationList::removeHead() {
     NodePtr victim = head;
     head = head->next;
-    if (head)
+    if (!empty())
 	head->prev = NULL;
+    else {
+	head = NULL;
+	tail = NULL;
+	count = 0;
+    }
     ReservationPtr data = victim->data;
     victim->data = NULL;
     victim->next = NULL;
