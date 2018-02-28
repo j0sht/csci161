@@ -24,6 +24,7 @@ class ReservationList {
 public:
     /* Constructor & Destructor */
     ReservationList();
+    ~ReservationList();
     /* Public Methods */
     // Returns true if list is empty, otherwise false
     bool isEmpty() const;
@@ -39,10 +40,10 @@ public:
     // Remove's the earliest pick up time from the list
     void removeEarliest() throw (ReservationListEmpty);
     // Reads in reservations if they exist. Returns true if
-    //  reservations.txt was opened successfully else false
-    bool readReservations();
-    // Write reservations in list to reservations.txt
-    void writeReservations();
+    //  filename was opened successfully else false
+    bool readReservations(string filename);
+    // Write reservations in list to filename
+    void writeReservations(string filename);
 private:
     // Node definition and convenience typedef for Node*
     struct Node {

@@ -26,6 +26,10 @@ ReservationList::ReservationList() {
     tail = NULL;
     processed = count = 0;
 }
+ReservationList::~ReservationList() {
+    while (head)
+	removeHead();
+}
 // Public methods
 bool ReservationList::isEmpty() const {
     return (head == NULL);
@@ -88,10 +92,12 @@ void ReservationList::removeEarliest() throw (ReservationListEmpty) {
 	 << "a taxi driver.\n";
     // Delete head - the node with the earliest pick up time
     removeHead();
+    // Increment processed
+    processed++;
 }
-bool ReservationList::readReservations() {
+bool ReservationList::readReservations(string filename) {
     ifstream inputStream;
-    inputStream.open("reservations.txt");
+    inputStream.open(filename.c_str());
     if (inputStream.fail())
 	return false;
     int numRecords;
@@ -111,17 +117,19 @@ bool ReservationList::readReservations() {
     inputStream.close();
     return true;
 }
-void ReservationList::writeReservations() {
+void ReservationList::writeReservations(string filename) {
     ofstream outputStream;
-    outputStream.open("reservations.txt");
-    outputStream << count << endl;
-    NodePtr tmp = head;
-    while (tmp) {
-	outputStream << tmp->data->getHour() << " ";
-	outputStream << tmp->data->getMinute() << endl;
-	outputStream << tmp->data->getLocation() << endl;
-	outputStream << tmp->data->getContact() << endl;
-	tmp = tmp->next;
+    outputStream.open(filename.c_str());
+    if (!outputStream.fail()) {
+	outputStream << count << endl;
+	NodePtr tmp = head;
+	while (tmp) {
+	    outputStream << tmp->data->getHour() << " ";
+	    outputStream << tmp->data->getMinute() << endl;
+	    outputStream << tmp->data->getLocation() << endl;
+	    outputStream << tmp->data->getContact() << endl;
+	    tmp = tmp->next;
+	}
     }
     outputStream.close();
 }
@@ -180,6 +188,4 @@ void ReservationList::removeHead() {
     victim->next = NULL;
     delete victim;
     victim = NULL;
-    // Increment processed
-    processed++;
 }
