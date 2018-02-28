@@ -5,19 +5,19 @@
  * Updated: February 27, 2018
  *
  * Purpose:
- *    - This file contains the definition of a LinkedList
+ *    - This file contains the definition of a ReservationList
  */
-#ifndef LINKEDLIST_H
-#define LINKEDLIST_H
+#ifndef RESERVATIONLIST_H
+#define RESERVATIONLIST_H
 #include <iostream>
 #include "reservation.h"
 using namespace std;
 
 // Linked list class definition
-class LinkedList {
+class ReservationList {
 public:
     /* Constructor */
-    LinkedList();
+    ReservationList();
     /* Public Methods */
     // Returns true if list is empty, otherwise false
     bool isEmpty();
@@ -38,7 +38,7 @@ private:
 	Node *next;
     };
     typedef Node* NodePtr;
-    /* LinkedList member variables */
+    /* ReservationList member variables */
     // Pointers to head and tail of list
     NodePtr head, tail;
     // Integer to keep track of processed reservations

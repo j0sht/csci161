@@ -1,9 +1,9 @@
-pex3: reservation.o linkedlist.o main.o
-	g++ -Wall reservation.o linkedlist.o main.o -o pex3
-main.o: reservation.h linkedlist.h main.cpp
+pex3: reservation.o reservationlist.o main.o
+	g++ -Wall reservation.o reservationlist.o main.o -o pex3
+main.o: reservation.h reservationlist.h main.cpp
 	g++ -Wall -c main.cpp
-linkedlist.o: reservation.h linkedlist.h linkedlist.cpp
-	g++ -Wall -c linkedlist.cpp
+reservationlist.o: reservation.h reservationlist.h reservationlist.cpp
+	g++ -Wall -c reservationlist.cpp
 reservation.o: reservation.h reservation.cpp
 	g++ -Wall -c reservation.cpp
 clean:

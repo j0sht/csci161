@@ -9,7 +9,7 @@
  */
 #include <iostream>
 #include "reservation.h"
-#include "linkedlist.h"
+#include "reservationlist.h"
 using namespace std;
 
 // Display's welcome message to user
@@ -19,11 +19,11 @@ void printMenu();
 // Get user's command character
 char getCommand();
 // Submit new taxi reservation based on user's input
-void submitNewReservation(LinkedList &list);
+void submitNewReservation(ReservationList &list);
 // Tell user that reservations exist
 void printReservationsExistMessage();
 // Display's processed reservations
-void printProcessedReservationCount(const LinkedList& list);
+void printProcessedReservationCount(const ReservationList& list);
 
 /* MAIN */
 int main() {
@@ -31,7 +31,7 @@ int main() {
     //  and the list is empty
     bool running = true;
     // list to manage reservations
-    LinkedList list = LinkedList();
+    ReservationList list = ReservationList();
     // welcome user to program and display menu
     welcome();
     printMenu();
@@ -92,7 +92,7 @@ void printMenu() {
 	 << "   or H for help (displays this menu)\n"
 	 << "   or T to terminate this program\n\n";
 }
-void submitNewReservation(LinkedList &list) {
+void submitNewReservation(ReservationList &list) {
     // Create reservation
     ReservationPtr data = new Reservation;
     // Get user to set values for reservation
@@ -102,7 +102,7 @@ void submitNewReservation(LinkedList &list) {
     // Inform user reservation was successfully added
     cout << "Reservation successfully added into the list.\n";
 }
-void printProcessedReservationCount(const LinkedList& list) {
+void printProcessedReservationCount(const ReservationList& list) {
     // Show user processed reservation count
     cout << "The total number of reservations processed is "
 	 << list.getProcessed() << ".\n";

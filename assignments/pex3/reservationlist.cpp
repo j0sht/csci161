@@ -5,28 +5,28 @@
  * Updated: February 27, 2018
  *
  * Purpose:
- *    - This file contains the implementation of a LinkedList
+ *    - This file contains the implementation of a ReservationList
  */
 #include <iostream>
 #include "reservation.h"
-#include "linkedlist.h"
+#include "reservationlist.h"
 using namespace std;
 
 // Constructor
-LinkedList::LinkedList() {
+ReservationList::ReservationList() {
     head = NULL;
     tail = NULL;
     processed = 0;
 }
 
 // Public methods
-bool LinkedList::isEmpty() {
+bool ReservationList::isEmpty() {
     return (head == NULL);
 }
-int LinkedList::getProcessed() const {
+int ReservationList::getProcessed() const {
     return processed;
 }
-void LinkedList::insert(ReservationPtr data) {
+void ReservationList::insert(ReservationPtr data) {
     // Create new node
     NodePtr node = new Node;
     // Add node data
@@ -57,7 +57,7 @@ void LinkedList::insert(ReservationPtr data) {
 	}
     }
 }
-void LinkedList::display() {
+void ReservationList::display() {
     if (isEmpty()) {
 	printNoReservationsMessage();
     } else {
@@ -70,7 +70,7 @@ void LinkedList::display() {
 	}
     }
 }
-void LinkedList::removeEarliest() {
+void ReservationList::removeEarliest() {
     if (isEmpty()) {
 	printNoReservationsMessage();
     } else {
@@ -83,12 +83,12 @@ void LinkedList::removeEarliest() {
     }
 }
 // Private methods
-void LinkedList::printNoReservationsMessage() {
+void ReservationList::printNoReservationsMessage() {
     // Tell user there are reservations in the list
     cout << "\nThere is currently no reservation in the "
 	 << "reservation list.\n\n";
 }
-void LinkedList::setUpFirstNodeWith(NodePtr node) {
+void ReservationList::setUpFirstNodeWith(NodePtr node) {
     // Set node's next to head
     node->next = head;
     // Set node's prev to NULL indicating head
@@ -97,7 +97,7 @@ void LinkedList::setUpFirstNodeWith(NodePtr node) {
     head = node;
     tail = node;
 }
-void LinkedList::setTailTo(NodePtr node) {
+void ReservationList::setTailTo(NodePtr node) {
     // Point new node's next to NULL indicating tail
     node->next = NULL;
     // Point current tail's next to new node
@@ -107,7 +107,7 @@ void LinkedList::setTailTo(NodePtr node) {
     // Set tail to new node
     tail = node;
 }
-void LinkedList::setHeadTo(NodePtr node) {
+void ReservationList::setHeadTo(NodePtr node) {
     // Set node's next to current head
     node->next = head;
     // Set node's prev to NULL indicating head
@@ -117,7 +117,7 @@ void LinkedList::setHeadTo(NodePtr node) {
     // Set head to new node
     head = node;
 }
-void LinkedList::insertBefore(NodePtr node, NodePtr after) {
+void ReservationList::insertBefore(NodePtr node, NodePtr after) {
     // Point after node's prev node's next to new node
     after->prev->next = node;
     // Point new node's prev to after node's prev
@@ -127,7 +127,7 @@ void LinkedList::insertBefore(NodePtr node, NodePtr after) {
     // Point after's prev to new node
     after->prev = node;
 }
-void LinkedList::removeHead() {
+void ReservationList::removeHead() {
     // Create victim to remove
     NodePtr victim = head;
     // Set head to next node in the list
