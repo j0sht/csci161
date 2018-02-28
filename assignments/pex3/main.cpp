@@ -12,8 +12,10 @@
 #include "reservationlist.h"
 using namespace std;
 
+// Global Constants
 const string filename = "reservations.txt";
 
+// Global Functions
 // Display's welcome message to user
 void welcome();
 // Display's list of acceptable commands to user
@@ -30,10 +32,8 @@ void displayContentsOf(const ReservationList& list);
 //  if it is not empty, else displays the proccessed count. Returns true
 //  if the list is empty, otherwise false.
 bool attemptToTerminateWith(const ReservationList& list);
-void displayReservationsExistMessage();
-void displayProcessedReservationCount(const ReservationList& list);
 // Asks user if reservation is for today or tomorrow. Returns true
-//  if reservation is for today.
+//  if reservation is for today, else false.
 bool reservationForToday();
 
 /* MAIN */
@@ -41,7 +41,7 @@ int main() {
     bool running = true;
     ReservationList todaysList, tomorrowsList;
     welcome();
-    if (!todaysList.readReservations(filename))
+    if (!todaysList.readReservationsTo(filename))
 	cout << "Can't open " << filename << " to read data.\n"
 	     << "Assuming that there is no reservation made yesterday.\n";
     displayMenu();
@@ -67,11 +67,12 @@ int main() {
 	    cout << "Unknown command. Try again.\n";
         }
     }
-    tomorrowsList.writeReservations(filename);
+    tomorrowsList.writeReservationsTo(filename);
     return 0;
 }
+/* END MAIN */
 
-/* GLOBAL FUNCTION DEFINITIONS */
+// Global function definitions
 void welcome() {
     cout << "\n*** Welcome to Taxi Reservation Management System ***\n\n";
 }
@@ -125,19 +126,13 @@ void displayContentsOf(const ReservationList& list) {
 bool attemptToTerminateWith(const ReservationList& list) {
     bool notEmpty = !list.empty();
     if (notEmpty) {
-	displayReservationsExistMessage();
+	cout << "\nProgram can not terminate.\n"
+	     << "There are still reservations in the reservations list.\n";
     } else {
-	displayProcessedReservationCount(list);
+	cout << "The total number of reservations processed is "
+	     << list.getProcessed() << ".\n";
     }
     return notEmpty;
-}
-void displayProcessedReservationCount(const ReservationList& list) {
-    cout << "The total number of reservations processed is "
-	 << list.getProcessed() << ".\n";
-}
-void displayReservationsExistMessage() {
-    cout << "\nProgram can not terminate.\n"
-	 << "There are still reservations in the reservations list.\n";
 }
 bool reservationForToday() {
     string prompt = "Is the reservation for today (Y) or tomorrow (N)?\n";

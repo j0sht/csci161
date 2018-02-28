@@ -85,7 +85,7 @@ ReservationPtr ReservationList::removeEarliest() throw (ReservationListEmpty) {
     processed++;
     return data;
 }
-bool ReservationList::readReservations(string filename) {
+bool ReservationList::readReservationsTo(string filename) {
     ifstream inputStream;
     inputStream.open(filename.c_str());
     if (inputStream.fail())
@@ -107,7 +107,7 @@ bool ReservationList::readReservations(string filename) {
     inputStream.close();
     return true;
 }
-void ReservationList::writeReservations(string filename) {
+void ReservationList::writeReservationsTo(string filename) {
     ofstream outputStream;
     outputStream.open(filename.c_str());
     if (!outputStream.fail()) {

@@ -40,8 +40,8 @@ public:
     ReservationPtr removeEarliest() throw (ReservationListEmpty);
     // Reads in reservations if they exist. Returns true if
     //  filename was opened successfully else false
-    bool readReservations(string filename);
-    void writeReservations(string filename);
+    bool readReservationsTo(string filename);
+    void writeReservationsTo(string filename);
 private:
     // Node definition and convenience typedef for Node*
     struct Node {
