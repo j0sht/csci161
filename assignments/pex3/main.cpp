@@ -20,16 +20,16 @@ void welcome();
 void displayMenu();
 char getCommand();
 // Submit newly allocated taxi reservation to today or tomorrow's list
-void submitNewReservation(ReservationList &today,
-			  ReservationList &tomorrow);
+void submitNewReservation(ReservationList& today,
+			  ReservationList& tomorrow);
 // Get's earliest reservation from list, displays it's reservations data
 //  and deallocates it
-void pickUpFrom(ReservationList &list);
-void displayContentsOf(const ReservationList &list);
+void pickUpFrom(ReservationList& list);
+void displayContentsOf(const ReservationList& list);
 // Checks if list is empty, then explains to user that program cannot terminate
 //  if it is not empty, else displays the proccessed count. Returns true
 //  if the list is empty, otherwise false.
-bool attemptToTerminateWith(const ReservationList &list);
+bool attemptToTerminateWith(const ReservationList& list);
 void displayReservationsExistMessage();
 void displayProcessedReservationCount(const ReservationList& list);
 // Asks user if reservation is for today or tomorrow. Returns true
@@ -92,8 +92,8 @@ void displayMenu() {
 	 << "   or H for help (displays this menu)\n"
 	 << "   or T to terminate this program\n\n";
 }
-void submitNewReservation(ReservationList &todaysList,
-			  ReservationList &tomorrowsList) {
+void submitNewReservation(ReservationList& todaysList,
+			  ReservationList& tomorrowsList) {
     ReservationPtr data = new Reservation;
     data->userSetValues();
     if (reservationForToday()) {
@@ -123,7 +123,7 @@ void displayContentsOf(const ReservationList& list) {
     }
 }
 bool attemptToTerminateWith(const ReservationList& list) {
-    bool notEmpty = !list.isEmpty();
+    bool notEmpty = !list.empty();
     if (notEmpty) {
 	displayReservationsExistMessage();
     } else {

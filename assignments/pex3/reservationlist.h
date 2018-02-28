@@ -27,7 +27,7 @@ public:
     ~ReservationList();
     // Propert getters
     // Returns true if list is empty, otherwise false
-    bool isEmpty() const;
+    bool empty() const;
     int getProcessed() const;
     // Returns number of reservations currently in list
     int getCount() const;

@@ -34,7 +34,7 @@ ReservationList::~ReservationList() {
     }
 }
 // Public methods
-bool ReservationList::isEmpty() const {
+bool ReservationList::empty() const {
     return (head == NULL);
 }
 int ReservationList::getProcessed() const {
@@ -69,7 +69,7 @@ void ReservationList::insert(ReservationPtr data) {
     count++;
 }
 void ReservationList::display() const throw (ReservationListEmpty) {
-    if (isEmpty())
+    if (empty())
 	throw ReservationListEmpty();
     NodePtr tmp = head;
     while (tmp) {
@@ -79,7 +79,7 @@ void ReservationList::display() const throw (ReservationListEmpty) {
     }
 }
 ReservationPtr ReservationList::removeEarliest() throw (ReservationListEmpty) {
-    if (isEmpty())
+    if (empty())
 	throw ReservationListEmpty();
     ReservationPtr data = removeHead();
     processed++;
