@@ -8,23 +8,33 @@
  *    - This file contains the implementation of a ReservationList
  */
 #include <iostream>
+#include <fstream>
 #include "reservation.h"
 #include "reservationlist.h"
 using namespace std;
+
+// Error class
+string ReservationListEmpty::description() const {
+    string s = "\nThere is currently no reservation in the ";
+    s += "reservation list.\n";
+    return s;
+}
 
 // Constructor
 ReservationList::ReservationList() {
     head = NULL;
     tail = NULL;
-    processed = 0;
+    processed = count = 0;
 }
-
 // Public methods
-bool ReservationList::isEmpty() {
+bool ReservationList::isEmpty() const {
     return (head == NULL);
 }
 int ReservationList::getProcessed() const {
     return processed;
+}
+int ReservationList::getCount() const {
+    return count;
 }
 void ReservationList::insert(ReservationPtr data) {
     // Create new node
@@ -56,38 +66,66 @@ void ReservationList::insert(ReservationPtr data) {
 	    insertBefore(node, tmp);
 	}
     }
+    count++;
 }
-void ReservationList::display() {
-    if (isEmpty()) {
-	printNoReservationsMessage();
-    } else {
-	// Print pick up time for each node in the list
-	NodePtr tmp = head;
-	while (tmp) {
-	    tmp->data->printPickUpTime();
-	    cout << "------------\n";
-	    tmp = tmp->next;
-	}
+void ReservationList::display() const throw (ReservationListEmpty) {
+    if (isEmpty())
+	throw ReservationListEmpty();
+    // Print pick up time for each node in the list
+    NodePtr tmp = head;
+    while (tmp) {
+	tmp->data->printPickUpTime();
+	cout << "------------\n";
+	tmp = tmp->next;
     }
 }
-void ReservationList::removeEarliest() {
-    if (isEmpty()) {
-	printNoReservationsMessage();
-    } else {
-	// Display earliest pick up time
-	head->data->printPickUpTime();
-	cout << "The information of this reservation has passed to "
-	     << "a taxi driver.\n";
-	// Delete head - the node with the earliest pick up time
-	removeHead();
+void ReservationList::removeEarliest() throw (ReservationListEmpty) {
+    if (isEmpty())
+	throw ReservationListEmpty();
+    // Display earliest pick up time
+    head->data->printPickUpTime();
+    cout << "The information of this reservation has passed to "
+	 << "a taxi driver.\n";
+    // Delete head - the node with the earliest pick up time
+    removeHead();
+}
+bool ReservationList::readReservations() {
+    ifstream inputStream;
+    inputStream.open("reservations.txt");
+    if (inputStream.fail())
+	return false;
+    int numRecords;
+    inputStream >> numRecords;
+    for (int i = 0; i < numRecords; i++) {
+	int hour, minute;
+	string location, contact;
+	inputStream >> hour >> minute;
+	string garbage;
+	getline(inputStream, garbage);
+	getline(inputStream, location);
+	getline(inputStream, contact);
+	ReservationPtr data = new Reservation(hour, minute,
+					      location, contact);
+	insert(data);
     }
+    inputStream.close();
+    return true;
+}
+void ReservationList::writeReservations() {
+    ofstream outputStream;
+    outputStream.open("reservations.txt");
+    outputStream << count << endl;
+    NodePtr tmp = head;
+    while (tmp) {
+	outputStream << tmp->data->getHour() << " ";
+	outputStream << tmp->data->getMinute() << endl;
+	outputStream << tmp->data->getLocation() << endl;
+	outputStream << tmp->data->getContact() << endl;
+	tmp = tmp->next;
+    }
+    outputStream.close();
 }
 // Private methods
-void ReservationList::printNoReservationsMessage() {
-    // Tell user there are reservations in the list
-    cout << "\nThere is currently no reservation in the "
-	 << "reservation list.\n\n";
-}
 void ReservationList::setUpFirstNodeWith(NodePtr node) {
     // Set node's next to head
     node->next = head;

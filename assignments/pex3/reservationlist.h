@@ -13,23 +13,36 @@
 #include "reservation.h"
 using namespace std;
 
+// Error class
+class ReservationListEmpty {
+public:
+    string description() const;
+};
+
 // Linked list class definition
 class ReservationList {
 public:
-    /* Constructor */
+    /* Constructor & Destructor */
     ReservationList();
     /* Public Methods */
     // Returns true if list is empty, otherwise false
-    bool isEmpty();
+    bool isEmpty() const;
     // Returns processed count
     int getProcessed() const;
+    // Returns number of reservations in list
+    int getCount() const;
     // Insert's data into list based on data's pick up time
     //  sorted from earliest to latest pick up time
     void insert(ReservationPtr data);
     // Display's list contents
-    void display();
+    void display() const throw (ReservationListEmpty);
     // Remove's the earliest pick up time from the list
-    void removeEarliest();
+    void removeEarliest() throw (ReservationListEmpty);
+    // Reads in reservations if they exist. Returns true if
+    //  reservations.txt was opened successfully else false
+    bool readReservations();
+    // Write reservations in list to reservations.txt
+    void writeReservations();
 private:
     // Node definition and convenience typedef for Node*
     struct Node {
@@ -43,9 +56,9 @@ private:
     NodePtr head, tail;
     // Integer to keep track of processed reservations
     int processed;
+    // Integer to keep track of list count
+    int count;
     /* Private Methods */
-    // Informs user there are no reservations in the list
-    void printNoReservationsMessage();
     // Sets up node to be the first node in an empty list
     /* Assumes that node is not NULL */
     void setUpFirstNodeWith(NodePtr node);
