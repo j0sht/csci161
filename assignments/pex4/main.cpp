@@ -43,7 +43,7 @@ int main(int argc, char** argv) {
 		backStack.push(url);
 		displayCurrentURL(backStack);
 	    } catch (EmptyStack& e) {
-		cout << "Can't move forward anymore.\n";
+		cout << "Can't move forward any more.\n";
 	    }
 	} else if (userInput == "click") {
 	    cin >> rawURL;
