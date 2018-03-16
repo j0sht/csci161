@@ -11,10 +11,19 @@
 #include <iostream>
 using namespace std;
 
+URL::URL() {
+    url = "";
+}
 URL::URL(const string& s) {
     url = s;
 }
-
+URL::URL(char* s) {
+    url = string(s);
+}
+istream& operator >>(istream& ins, URL& u) {
+    ins >> u.url;
+    return ins;
+}
 ostream& operator <<(ostream& outs, const URL& u) {
     outs << u.url;
     return outs;

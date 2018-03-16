@@ -21,8 +21,7 @@ int main(int argc, char** argv) {
 	exit(1);
     }
     URLStack backStack, forwardStack;
-    string rawURL = string(argv[1]);
-    URLPtr firstURL = new URL(rawURL);
+    URLPtr firstURL = new URL(argv[1]);
     backStack.push(firstURL);
     displayCurrentURL(backStack);
     string userInput;
@@ -46,10 +45,10 @@ int main(int argc, char** argv) {
 		cout << "Can't move forward any more.\n";
 	    }
 	} else if (userInput == "click") {
-	    cin >> rawURL;
+	    URLPtr url = new URL;
+	    cin >> *url;
 	    string garbage;
 	    getline(cin, garbage);
-	    URLPtr url = new URL(rawURL);
 	    backStack.push(url);
 	    forwardStack.dump();
 	    displayCurrentURL(backStack);

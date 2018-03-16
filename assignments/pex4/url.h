@@ -14,7 +14,10 @@ using namespace std;
 
 class URL {
 public:
+    URL();
     URL(const string& s);
+    URL(char* s);
+    friend istream& operator >>(istream& ins, URL& u);
     friend ostream& operator <<(ostream& outs, const URL& u);
 private:
     string url;
