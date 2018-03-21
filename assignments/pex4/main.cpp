@@ -2,7 +2,7 @@
  * File: main.cpp
  * Author: Joshua Tate
  * Date: March 15, 2018
- * Updated: March 20, 2018
+ * Updated: March 21, 2018
  *
  * Purpose:
  *    - This file contains the main program
@@ -27,7 +27,8 @@ void convertToLowercase(string& s);
 void displayCurrentURL(const URLStack& stack);
 // Pop's url from s1 and pushes it onto s2, then displays top of s1 if n == 1,
 //  or top of s2 if n == 2, otherwise displays nothing
-void popPushDisplay(URLStack& s1, URLStack & s2, int n) throw (EmptyStack);
+// Throws EmptyStack error if s1 is empty.
+void popPushDisplay(URLStack& s1, URLStack& s2, int n) throw (EmptyStack);
 // Removes trailing input from cin
 void removeTrailingInput();
 

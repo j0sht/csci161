@@ -2,10 +2,10 @@
  * File: urlstack.cpp
  * Author: Joshua Tate
  * Date: March 15, 2018
- * Updated: March 20, 2018
+ * Updated: March 21, 2018
  *
  * Purpose:
- *    - This file contains the implementation of a Stack
+ *    - This file contains the implementation of a URLStack
  */
 #include <iostream>
 #include "urlstack.h"
@@ -51,10 +51,4 @@ void URLStack::deleteAll() {
 	URLRef url = pop();
 	delete &url;
     }
-}
-
-// Private methods
-void URLStack::initializeEmpty() {
-    head = NULL;
-    count = 0;
 }

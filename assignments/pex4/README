@@ -1,0 +1,64 @@
+/*
+ * File: README
+ * Author: Joshua Tate
+ * Date: March 21, 2018
+ * Updated: March 21, 2018
+ *
+ * Purpose:
+ *    - This file provides an overview of the pex4 program.
+ */
+pex4 is a C++ program that can be compiled with the command:
+
+    $ make
+
+Once compiled, the program can simply be run with:
+
+    $ ./pex4 starting_url
+
+Where '$' represents the terminal prompt, and assuming url.h,
+url.cpp, urlstack.h, urlstack.cpp, main.cpp, and
+Makefile are in the directory in which the command is run.
+
+Overview:
+    - This program simulates the functionality of a web browser, allowing users
+      to enter an initial URL via the command line, then navigating through back,
+      forward, and click commands. The user can exit the simulation by entering
+      exit.
+
+Design:
+    - The program consists of two primary classes, and an accompanying
+      error class.
+    - The URL class is simply a wrapper around the string class, providing a
+      symbolic interface for a URL throughout the program. Users of the URL class
+      can construct a URL with a string or char* type, or no intial value and print
+      and modify the url with '<<' and '>>' operators.
+    - The URLStack class is an implementation of the abstract data
+      type Stack, but can only contain values of the URL type. Users of the URLStack
+      class can construct the stack with an initial URL or no initial value. Users
+      can also get the number of URLs in the stack through the getCount method,
+      check if the stack is empty with the isEmpty method, and push a URL, pop the
+      most recently pushed URL or take a peek at it. The class uses a linked-list
+      to manage the URLs.
+    - The EmptyStack class is an error class, thrown when users of the URLStack class
+      attempt the peek or pop operations on an empty stack.
+
+Implementation:
+    - The URLStack class uses a pointer-based data structure in the
+      form of a singly-linked list.
+    - The advantage of using this kind of data structure is that insertion
+      and removal is quick and efficient.
+    - A disadvantage of using this kind of data structure is that memory
+      must be managed manually and must be done carefully to avoid
+      memory leaks that can cause the program to crash if not managed
+      properly.
+
+Accomplishment:
+    - This program satisfies all requirements of the assignment.
+
+Testing:
+    - All methods of the classes have been sufficiently tested and passed
+      each test. The program was run with identical input mimicking the sample
+      run on the assignment page and produced identical output.
+
+Known Bugs:
+    - As of testing on March 21, 2018, there are no known bugs.

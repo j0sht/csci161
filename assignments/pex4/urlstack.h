@@ -2,7 +2,7 @@
  * File: urlstack.h
  * Author: Joshua Tate
  * Date: March 15, 2018
- * Updated: March 20, 2018
+ * Updated: March 21, 2018
  *
  * Purpose:
  *    - This file contains the definition of a URLStack.
@@ -43,7 +43,9 @@ private:
     typedef Node* NodePtr;
     NodePtr head;
     int count;
-    // Sets head to NULL and count to 0
-    void initializeEmpty();
+    void initializeEmpty() {
+	head = NULL;
+	count = 0;
+    }
 };
 #endif
