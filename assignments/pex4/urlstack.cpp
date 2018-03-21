@@ -11,12 +11,6 @@
 #include "urlstack.h"
 using namespace std;
 
-// Error class << overload
-ostream& operator <<(ostream& outs, const EmptyStack& e) {
-    outs << "ERROR: Empty stack";
-    return outs;
-}
-
 // Constructor & Destructor
 URLStack::URLStack() {
     initializeEmpty();
@@ -63,14 +57,4 @@ void URLStack::deleteAll() {
 void URLStack::initializeEmpty() {
     head = NULL;
     count = 0;
-}
-
-// Debug
-void URLStack::display() const {
-    NodePtr tmp = head;
-    cout << "==============================\n";
-    for (int i = count; tmp; i--, tmp = tmp->next)
-	cout << "URL " << i << ": "
-	     << *(tmp->data) << endl;
-    cout << "==============================\n";
 }

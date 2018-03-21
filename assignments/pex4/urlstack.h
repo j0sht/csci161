@@ -14,10 +14,7 @@
 using namespace std;
 
 // Error class
-class EmptyStack {
-public:
-    friend ostream& operator <<(ostream& outs, const EmptyStack& e);
-};
+class EmptyStack {};
 
 class URLStack {
 public:
@@ -38,8 +35,6 @@ public:
     void push(URLRef url);
     // Deletes all urls in the stack
     void deleteAll();
-    // Debug
-    void display() const;
 private:
     struct Node {
 	URLPtr data;
