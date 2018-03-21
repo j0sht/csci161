@@ -2,7 +2,7 @@
  * File: urlstack.h
  * Author: Joshua Tate
  * Date: March 15, 2018
- * Updated: March 15, 2018
+ * Updated: March 20, 2018
  *
  * Purpose:
  *    - This file contains the definition of a Stack
@@ -22,6 +22,7 @@ public:
 class URLStack {
 public:
     URLStack();
+    URLStack(URLPtr url);
     ~URLStack();
     URLPtr pop() throw (EmptyStack);
     const URL& peek() const throw (EmptyStack);
@@ -40,5 +41,6 @@ private:
     typedef Node* NodePtr;
     NodePtr head;
     int count;
+    void initializeEmpty();
 };
 #endif

@@ -2,7 +2,7 @@
  * File: urlstack.cpp
  * Author: Joshua Tate
  * Date: March 15, 2018
- * Updated: March 15, 2018
+ * Updated: March 20, 2018
  *
  * Purpose:
  *    - This file contains the implementation of a Stack
@@ -19,8 +19,11 @@ ostream& operator <<(ostream& outs, const EmptyStack& e) {
 
 // Constructor & Destructor
 URLStack::URLStack() {
-    head = NULL;
-    count = 0;
+    initializeEmpty();
+}
+URLStack::URLStack(URLPtr url) {
+    initializeEmpty();
+    push(url);
 }
 URLStack::~URLStack() {
     dump();
@@ -54,6 +57,12 @@ void URLStack::dump() {
 	URLPtr url = pop();
 	delete url;
     }
+}
+
+// Private methods
+void URLStack::initializeEmpty() {
+    head = NULL;
+    count = 0;
 }
 
 // Debug
