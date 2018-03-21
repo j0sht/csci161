@@ -21,16 +21,16 @@ ostream& operator <<(ostream& outs, const EmptyStack& e) {
 URLStack::URLStack() {
     initializeEmpty();
 }
-URLStack::URLStack(URLPtr url) {
+URLStack::URLStack(URLRef url) {
     initializeEmpty();
     push(url);
 }
 URLStack::~URLStack() {
-    dump();
+    deleteAll();
 }
 
 // Public Methods
-URLPtr URLStack::pop() throw (EmptyStack) {
+URLRef URLStack::pop() throw (EmptyStack) {
     if (isEmpty())
 	throw EmptyStack();
     NodePtr tmp = head;
@@ -38,24 +38,24 @@ URLPtr URLStack::pop() throw (EmptyStack) {
     URLPtr url = tmp->data;
     delete tmp;
     count--;
-    return url;
+    return *url;
 }
-const URL& URLStack::peek() const throw (EmptyStack) {
+URLRef URLStack::peek() const throw (EmptyStack) {
     if (isEmpty())
 	throw EmptyStack();
     return *(head->data);
 }
-void URLStack::push(URLPtr url) {
+void URLStack::push(URLRef url) {
     NodePtr newNode = new Node;
-    newNode->data = url;
+    newNode->data = &url;
     newNode->next = head;
     head = newNode;
     count++;
 }
-void URLStack::dump() {
+void URLStack::deleteAll() {
     while (head) {
-	URLPtr url = pop();
-	delete url;
+	URLRef url = pop();
+	delete &url;
     }
 }
 

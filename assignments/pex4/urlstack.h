@@ -5,7 +5,7 @@
  * Updated: March 20, 2018
  *
  * Purpose:
- *    - This file contains the definition of a Stack
+ *    - This file contains the definition of a URLStack.
  */
 #ifndef URLSTACK_H
 #define URLSTACK_H
@@ -21,16 +21,23 @@ public:
 
 class URLStack {
 public:
+    // Initializes head to NULL, count to 0
     URLStack();
-    URLStack(URLPtr url);
+    // Initializes stack with url in it
+    URLStack(URLRef url);
     ~URLStack();
-    URLPtr pop() throw (EmptyStack);
-    const URL& peek() const throw (EmptyStack);
-    void push(URLPtr url);
-    void dump();
+    // Property methods
     int getCount() const { return count; }
     bool isEmpty() const { return head == NULL; }
-    
+    // Action methods
+    // Removes and returns last entered URL
+    URLRef pop() throw (EmptyStack);
+    // Returns last entered URL
+    URLRef peek() const throw (EmptyStack);
+    // Adds url to the top of the stack
+    void push(URLRef url);
+    // Deletes all urls in the stack
+    void deleteAll();
     // Debug
     void display() const;
 private:
@@ -41,6 +48,7 @@ private:
     typedef Node* NodePtr;
     NodePtr head;
     int count;
+    // Sets head to NULL and count to 0
     void initializeEmpty();
 };
 #endif

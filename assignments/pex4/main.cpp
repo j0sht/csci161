@@ -26,7 +26,8 @@ int main(int argc, char** argv) {
 	cout << "usage: " << argv[0] << " starting_url\n";
 	exit(1);
     }
-    URLStack backStack(new URL(argv[1])), forwardStack;
+    URLRef firstURL = *(new URL(argv[1]));
+    URLStack backStack(firstURL), forwardStack;
     displayCurrentURL(backStack);
     string userInput;
     do {
@@ -36,25 +37,25 @@ int main(int argc, char** argv) {
 	    if (backStack.getCount() == 1)
 		cout << "Can't move back any more.\n";
 	    else {
-		URLPtr url = backStack.pop();
+		URLRef url = backStack.pop();
 		forwardStack.push(url);
 		displayCurrentURL(backStack);
 	    }
 	} else if (userInput == FWD) {
 	    try {
-		URLPtr url = forwardStack.pop();
+		URLRef url = forwardStack.pop();
 		backStack.push(url);
 		displayCurrentURL(backStack);
 	    } catch (EmptyStack& e) {
 		cout << "Can't move forward any more.\n";
 	    }
 	} else if (userInput == CLICK) {
-	    URLPtr url = new URL;
-	    cin >> *url;
+	    URLRef url = *(new URL);
+	    cin >> url;
 	    string garbage;
 	    getline(cin, garbage);
 	    backStack.push(url);
-	    forwardStack.dump();
+	    forwardStack.deleteAll();
 	    displayCurrentURL(backStack);
 	} else if (userInput != EXIT) {
 	    cout << "Uknown command, try again.\n";
