@@ -10,17 +10,18 @@
 #include "url.h"
 #include "urlstack.h"
 #include <iostream>
-#include <cstdlib>
+#include <cstdlib> // for exit
 #include <algorithm> // for transform
 using namespace std;
 
+/* Constants */
 const string BACK = "back";
 const string FWD = "forward";
 const string CLICK = "click";
 const string EXIT = "exit";
 const string PROMPT = "command$ ";
 
-// Converts string to lower case
+/* Function Headers */
 void convertToLowercase(string& s);
 // Displays top URL of stack
 void displayCurrentURL(const URLStack& stack);
@@ -30,6 +31,7 @@ void popPushDisplay(URLStack& s1, URLStack & s2, int n) throw (EmptyStack);
 // Removes trailing input from cin
 void removeTrailingInput();
 
+/* MAIN */
 int main(int argc, char** argv) {
     if (argc != 2) {
 	cout << "usage: " << argv[0] << " starting_url\n";
@@ -43,30 +45,34 @@ int main(int argc, char** argv) {
 	cout << PROMPT;
 	cin >> userInput;
 	convertToLowercase(userInput);
-	if (userInput == BACK)
-	    if (backStack.getCount() == 1)
+	if (userInput == BACK) {
+	    if (backStack.getCount() == 1) {
 		cout << "Can't move back any more.\n";
-	    else
+	    } else {
 		popPushDisplay(backStack, forwardStack, 1);
-	else if (userInput == FWD)
+	    }
+	} else if (userInput == FWD) {
 	    try {
 		popPushDisplay(forwardStack, backStack, 2);
 	    } catch (EmptyStack& e) {
 		cout << "Can't move forward any more.\n";
 	    }
-	else if (userInput == CLICK) {
+	} else if (userInput == CLICK) {
 	    URLRef url = *(new URL);
 	    cin >> url;
 	    backStack.push(url);
 	    forwardStack.deleteAll();
 	    displayCurrentURL(backStack);
-	} else if (userInput != EXIT)
+	} else if (userInput != EXIT) {
 	    cout << "Uknown command, try again.\n";
+	}
 	removeTrailingInput();
     } while (userInput != EXIT);
     return 0;
 }
+/* END MAIN */
 
+/* Function Defintions */
 void convertToLowercase(string& s) {
     transform(s.begin(), s.end(), s.begin(), ::tolower);
 }
