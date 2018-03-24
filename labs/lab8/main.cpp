@@ -28,9 +28,11 @@ int main() {
 		     << "Queue is full. Cannot add new student.\n"
 		     << "======================================\n";
 	    } else {
+		cout << "--------------------------------------\n";
 		Student& newStudent = *(new Student);
 		cin >> newStudent;
 		queue.enqueue(newStudent);
+		cout << "--------------------------------------\n";
 	    }
 	    break;
 	case 'd':
@@ -40,7 +42,9 @@ int main() {
 		     << "========================================\n";
 	    } else {
 		Student& student = queue.dequeue();
-		cout << "DEQUEUED:\n    " << student << endl;
+		cout << "--------------------------------------\n";
+		cout << "DEQUEUED:\n\n    " << student << endl;
+		cout << "--------------------------------------\n";
 		delete &student;
 	    }
 	    break;
@@ -50,7 +54,9 @@ int main() {
 		     << "Queue is empty. Cannot view next student.\n"
 		     << "=========================================\n";
 	    } else {
-		cout << "NEXT IN QUEUE:\n    " << queue.peek() << endl;
+		cout << "--------------------------------------\n";
+		cout << "NEXT IN QUEUE:\n\n    " << queue.peek() << endl;
+		cout << "--------------------------------------\n";
 	    }
 	    break;
 	case 'p':
@@ -67,7 +73,9 @@ int main() {
 	    running = false;
 	    break;
 	default:
+	    cout << "===================================\n";
 	    cout << "Unknown command. Try again.\n";
+	    cout << "===================================\n";
 	}
     }
     cout << "Goodbye!\n";
