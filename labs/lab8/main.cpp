@@ -2,37 +2,74 @@
 #include "student.h"
 #include "queue.h"
 #include <iostream>
+#include <cctype>
 using namespace std;
 
 int main() {
-    const int size = 3;
+    int size;
+    cout << "Enter queue size: ";
+    cin >> size;
     MyQueue<Student> queue(size);
-    try {
-	queue.peek();
-    } catch (EmptyQueue& e) {
-	cout << "Queue is empty.\n";
+    bool running = true;
+    while (running) {
+	cout << "Options:\n"
+	     << "  (E)nqueue\n"
+	     << "  (D)equeue\n"
+	     << "  (V)iew next\n"
+	     << "  (P)rint queue\n"
+	     << "  (Q)uit\n\n"
+	     << "command$ ";
+	char cmd;
+	cin >> cmd;
+	switch(tolower(cmd)) {
+	case 'e':
+	    if (queue.isFull()) {
+		cout << "======================================\n"
+		     << "Queue is full. Cannot add new student.\n"
+		     << "======================================\n";
+	    } else {
+		Student& newStudent = *(new Student);
+		cin >> newStudent;
+		queue.enqueue(newStudent);
+	    }
+	    break;
+	case 'd':
+	    if (queue.isEmpty()) {
+		cout << "========================================\n"
+		     << "Queue is empty. Cannot remove a student.\n"
+		     << "========================================\n";
+	    } else {
+		Student& student = queue.dequeue();
+		cout << "DEQUEUED:\n    " << student << endl;
+		delete &student;
+	    }
+	    break;
+	case 'v':
+	    if (queue.isEmpty()) {
+		cout << "=========================================\n"
+		     << "Queue is empty. Cannot view next student.\n"
+		     << "=========================================\n";
+	    } else {
+		cout << "NEXT IN QUEUE:\n    " << queue.peek() << endl;
+	    }
+	    break;
+	case 'p':
+	    if (queue.isEmpty()) {
+		cout << "===================================\n"
+		     << "Queue is empty. Nothing to display.\n"
+		     << "===================================\n";
+	    } else {
+		cout << "QUEUE:\n";
+		queue.display();
+	    }
+	    break;
+	case 'q':
+	    running = false;
+	    break;
+	default:
+	    cout << "Unknown command. Try again.\n";
+	}
     }
-    for (int i = 0; i < size; i++) {
-	Student& s = *(new Student);
-	cin >> s;
-	queue.enqueue(s);
-    }
-    Student& s = queue.dequeue();
-    cout << "Released from queue: " << s << endl;
-    delete &s;
-    cout << "Next up in queue: " << queue.peek() << endl;
-    Student& s2 = *(new Student("Josh", 120, 4.0));
-    queue.enqueue(s2);
-    Student& s3 = *(new Student("Jane", 120, 4.3));
-    try {
-	queue.enqueue(s3);
-    } catch (FullQueue &e) {
-	cout << "Queue is full.\n";
-	delete &s3;
-    }
-    while (!queue.isEmpty()) {
-	Student& student = queue.dequeue();
-	cout << "Dequeued: " << student << endl;
-    }
+    cout << "Goodbye!\n";
     return 0;
 }

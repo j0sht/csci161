@@ -12,12 +12,14 @@ public:
 	data = new T*[cap];
     }
     ~MyQueue() {
-	for (int i = 0; i < cap; i++)
-	    if (data[i])
-		delete data[i];
+	while (!isEmpty()) {
+	    T& obj = dequeue();
+	    delete &obj;
+	}
 	delete [] data;
     }
     bool isEmpty() { return size == 0; }
+    bool isFull() { return size == cap; }
     int getSize() { return size; }
     int getCap() { return cap; }
     void enqueue(T& obj) throw (FullQueue) {
@@ -40,8 +42,25 @@ public:
 	    throw EmptyQueue();
 	return *(data[head]);
     }
+    void display() {
+	int i = 0;
+	int sizeCopy = size;
+	while (i < sizeCopy) {
+	    T& obj = dequeue();
+	    cout << "----------------------------------------------------\n"
+		 << i+1 << ") " << obj << endl
+		 << "----------------------------------------------------\n";
+	    enqueue(obj);
+	    i++;
+	}
+    }
 private:
     T** data;
     int cap, head, tail, size;
 };
+
+// template <typename T>
+// ostream& operator <<(ostream& outs, const MyQueue<T> q) {
+
+// }
 #endif
