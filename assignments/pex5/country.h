@@ -58,5 +58,7 @@ private:
     string* description;
     double area;
     l_int population;
+    // Deletes heap allocated memory if it exists
+    void deleteFields();
 };
 #endif

@@ -22,10 +22,7 @@ Country::Country() {
     description = NULL;
 }
 Country::~Country() {
-    delete name;
-    delete capital;
-    delete language;
-    delete description;
+    deleteFields();
 }
 // I/O Friend Functions
 ostream& operator <<(ostream& outs, const Country& country) {
@@ -39,13 +36,26 @@ ostream& operator <<(ostream& outs, const Country& country) {
     return outs;
 }
 istream& operator >>(istream& ins, Country& country) {
-    getline(ins, *(country.name));
-    getline(ins, *(country.capital));
-    getline(ins, *(country.language));
+    country.deleteFields();
+    string* properties[3] = {
+	country.name, country.capital, country.language
+    };
+    for (int i = 0; i < 3; i++) {
+	properties[i] = new string;
+	getline(ins, *(properties[i]));
+    }
     string garbage;
     ins >> country.area;
     ins >> country.population;
     getline(ins, garbage);
+    country.description = new string;
     getline(ins, *(country.description));
     return ins;
+}
+// Country methods
+void Country::deleteFields() {
+    string* properties[4] = { name, capital, language, description };
+    for (int i = 0; i < 4; i++)
+	if (properties[i])
+	    delete properties[i];
 }
