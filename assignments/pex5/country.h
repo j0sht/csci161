@@ -2,7 +2,7 @@
  * File: country.h
  * Author: Joshua Tate
  * Date: April 2, 2018
- * Updated: April 2, 2018
+ * Updated: April 4, 2018
  *
  * Purpose:
  *    - This file contains the definition of a Country, which consists of:
