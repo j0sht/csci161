@@ -26,24 +26,23 @@ Country::~Country() {
 }
 // I/O Friend Functions
 ostream& operator <<(ostream& outs, const Country& country) {
-    outs << "--------------------"
+    outs << "--------------------\n"
 	 << "       Name: " << *(country.name) << endl
 	 << "    capital: " << *(country.capital) << endl
 	 << "   language: " << *(country.language) << endl
-	 << "       area: " << country.area << endl
+	 << "       area: " << fixed << setprecision(1) << country.area << endl
 	 << " population: " << country.population << endl
-	 << "description: " << *(country.description) << endl;
+	 << "description: " << *(country.description);
     return outs;
 }
 istream& operator >>(istream& ins, Country& country) {
     country.deleteFields();
-    string* properties[3] = {
-	country.name, country.capital, country.language
-    };
-    for (int i = 0; i < 3; i++) {
-	properties[i] = new string;
-	getline(ins, *(properties[i]));
-    }
+    country.name = new string;
+    getline(ins, *(country.name));
+    country.capital = new string;
+    getline(ins, *(country.capital));
+    country.language = new string;
+    getline(ins, *(country.language));
     string garbage;
     ins >> country.area;
     ins >> country.population;
