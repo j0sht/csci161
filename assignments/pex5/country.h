@@ -61,4 +61,6 @@ private:
     // Deletes heap allocated memory if it exists
     void deleteFields();
 };
+typedef Country* CountryPtr;
+typedef Country& CountryRef;
 #endif
