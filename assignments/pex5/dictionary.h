@@ -22,7 +22,8 @@ public:
     Dictionary();
     ~Dictionary();
     // Getters
-    int getSize() { return size; }
+    int getSize() const { return size; }
+    string* getKeys() const throw (EmptyDictionary);
     // Methods
     void insert(Key key, Value& value);
 private:
@@ -47,9 +48,24 @@ template <typename Key, typename Value>
 Dictionary<Key,Value>::~Dictionary() {
     deleteItems();
 }
+// Getters
+template <typename Key, typename Value>
+string* Dictionary<Key,Value>::getKeys() const throw (EmptyDictionary) {
+    string* keys = new string[size];
+    for (int i = 0; i < size; i++)
+	keys[i] = items[i].key;
+    return keys;
+}
 // Public Methods
 template <typename Key, typename Value>
 void Dictionary<Key,Value>::insert(Key key, Value& value) {
+    Item newItem;
+    newItem.key = key;
+    newItem.value = &value;
+    if (size == capacity)
+	doubleCapacity();
+    items[size] = newItem;
+    size++;
 }
 // Private Methods
 template <typename Key, typename Value>

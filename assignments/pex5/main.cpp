@@ -49,7 +49,9 @@ void updateCountryIn(Dictionary<string, Country>& dict);
 int main() {
     // Read contents of wikiCountry.txt into Dictionary
     Dictionary<string, Country> dict;
-    read(dict);
+    if (!read(dict))
+	cout << "Could not open: " << FILENAME << endl
+	     << "Starting with an empty wiki.\n";
     // Print valid user commands
     printMenu();
     bool running = true;
@@ -85,21 +87,20 @@ int main() {
 
 // Function definitions
 bool read(Dictionary<string, Country>& dict) {
-    // ifstream inputStream;
-    // inputStream.open(FILENAME);
-    // if (inputStream.fail())
-    // 	return false;
-    // int numberOfCountries;
-    // inputStream >> numberOfCountries;
-    // string garbage;
-    // getline(inputStream, garbage);
-    // for (int i = 0; i < numberOfCountries; i++) {
-    // 	// Insert country into dictionary
-    // 	CountryRef country = *(new Country);
-    // 	inputStream >> country;
-    // 	dict.insert(country.getName(), country);
-    // }
-    // inputStream.close();
+    ifstream inputStream;
+    inputStream.open(FILENAME);
+    if (inputStream.fail())
+	return false;
+    int numberOfCountries;
+    inputStream >> numberOfCountries;
+    string garbage;
+    getline(inputStream, garbage);
+    for (int i = 0; i < numberOfCountries; i++) {
+	CountryRef country = *(new Country);
+	inputStream >> country;
+	dict.insert(country.getName(), country);
+    }
+    inputStream.close();
     return true;
 }
 bool write(Dictionary<string, Country>& dict) {
@@ -157,15 +158,23 @@ void convertToLowercase(string& s) {
     transform(s.begin(), s.end(), s.begin(), ::tolower);
 }
 void listContentsOf(const Dictionary<string, Country>& dict) {
-    cout << "Listing contents...\n";
+    try {
+	string* keys = dict.getKeys();
+	for (int i = 0; i < dict.getSize(); i++)
+	    cout << keys[i] << endl;
+	delete [] keys;
+    } catch (EmptyDictionary &e) {
+	cout << "No countries in wiki.\n";
+    }
 }
 void showCountry(const Dictionary<string, Country>& dict) {
     cout << "Showing a country...\n";
 }
 void addCountryTo(Dictionary<string, Country>& dict) {
-    cout << "Adding a county...\n";
+    cout << "Adding a country...\n";
 }
 void removeCountryFrom(Dictionary<string, Country>& dict) {
+    cout << "Removing a country...\n";
 }
 void updateCountryIn(Dictionary<string, Country>& dict) {
     cout << "Updating a country...\n";
