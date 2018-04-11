@@ -174,7 +174,17 @@ void addCountryTo(Dictionary<string, Country>& dict) {
     cout << "New country added into the Wiki.\n";
 }
 void removeCountryFrom(Dictionary<string, Country>& dict) {
-    cout << "Removing a country...\n";
+    cout << "Please enter a country's full name: ";
+    string key;
+    getline(cin, key);
+    try {
+	CountryRef country = dict.remove(key);
+	cout << "Country " << country.getName()
+	     << " removed from the Wiki.\n";
+	delete &country;
+    } catch (ValueNotFound& e) {
+	cout << "Country " << key << " doesn't exist in the Wiki.\n";
+    }
 }
 void updateCountryIn(Dictionary<string, Country>& dict) {
     cout << "Updating a country...\n";

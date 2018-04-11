@@ -29,6 +29,7 @@ public:
     string* getKeys() const throw (EmptyDictionary);
     // Methods
     void insert(Key key, Value& value) throw (ExisitingKey);
+    Value& remove(Key key) throw (ValueNotFound);
     Value& valueForKey(Key key) const throw (ValueNotFound);
     bool contains(Key key) const;
 private:
@@ -84,6 +85,19 @@ void Dictionary<Key,Value>::insert(Key key, Value& value) throw (ExisitingKey) {
 	items[i] = items[i-1];
     items[index] = newItem;
     size++;
+}
+template <typename Key, typename Value>
+Value& Dictionary<Key,Value>::remove(Key key) throw (ValueNotFound) {
+    int index;
+    bool found = binarySearch(key, index);
+    if (!found)
+	throw ValueNotFound();
+    Item item = items[index];
+    Value& val = *(item.value);
+    for (int i = 0; i < size; i++)
+	items[i] = items[i+1];
+    size--;
+    return val;
 }
 template <typename Key, typename Value>
 Value& Dictionary<Key,Value>::valueForKey(Key key) const throw (ValueNotFound) {
