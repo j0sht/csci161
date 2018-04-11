@@ -1,8 +1,8 @@
 /*
- * File: country.cpp
+ * File: main.cpp
  * Author: Joshua Tate
  * Date: April 3, 2018
- * Updated: April 10, 2018
+ * Updated: April 11, 2018
  *
  * Purpose:
  *    - This file contains the main program.
@@ -11,7 +11,6 @@
 #include "country.h"
 #include <iostream>
 #include <fstream>
-#include <cstdlib>
 #include <iomanip>
 #include <algorithm> // for transform
 using namespace std;
@@ -35,25 +34,25 @@ enum class Command {
 // Reads contents of FILENAME into dict.
 //  returns true if open is successful, otherwise returns false.
 bool read(Dictionary<string, Country>& dict);
-bool write(Dictionary<string, Country>& dict);
+// Writes contents of dict into FILENAME.
+//  returns true if open is successful, otherwise returns false.
+bool write(const Dictionary<string, Country>& dict);
 // Prints list of acceptable user commands to cout
 void printMenu();
 Command getUserCommand();
 void convertToLowercase(string& s);
 void listContentsOf(const Dictionary<string, Country>& dict);
-void showCountry(const Dictionary<string, Country>& dict);
+void showCountryIn(const Dictionary<string, Country>& dict);
 void addCountryTo(Dictionary<string, Country>& dict);
 void removeCountryFrom(Dictionary<string, Country>& dict);
 void updateCountryIn(Dictionary<string, Country>& dict);
 
 /* MAIN */
 int main() {
-    // Read contents of wikiCountry.txt into Dictionary
     Dictionary<string, Country> dict;
     if (!read(dict))
 	cout << "Could not open: " << FILENAME << endl
 	     << "Starting with an empty wiki.\n";
-    // Print valid user commands
     printMenu();
     bool running = true;
     while (running) {
@@ -63,7 +62,7 @@ int main() {
 	    listContentsOf(dict);
 	    break;
 	case Command::Show:
-	    showCountry(dict);
+	    showCountryIn(dict);
 	    break;
 	case Command::Add:
 	    addCountryTo(dict);
@@ -81,7 +80,9 @@ int main() {
 	    running = false;
 	}
     }
-    write(dict);
+    if (!write(dict))
+	cout << "Could not open: " << FILENAME << endl
+	     << "Did not write Wiki to file.\n";
     return 0;
 }
 /* END MAIN */
@@ -104,24 +105,27 @@ bool read(Dictionary<string, Country>& dict) {
     inputStream.close();
     return true;
 }
-bool write(Dictionary<string, Country>& dict) {
+bool write(const Dictionary<string, Country>& dict) {
     ofstream outputStream;
     outputStream.open(FILENAME);
     if (outputStream.fail())
 	return false;
-    outputStream << dict.getSize() << endl;
-    string* keys = dict.getKeys();
-    for (int i = 0; i < dict.getSize(); i++) {
-	CountryRef country = dict.valueForKey(keys[i]);
-	outputStream << country.getName() << endl
-		     << country.getCapital() << endl
-		     << country.getLanguage() << endl
-		     << fixed << setprecision(1) << country.getArea() << endl
-		     << country.getPopulation() << endl
-		     << country.getDescription() << endl;
+    int size = dict.getSize();
+    outputStream << size << endl;
+    if (size > 0) {
+	string* keys = dict.getKeys();
+	for (int i = 0; i < size; i++) {
+	    CountryRef country = dict.valueForKey(keys[i]);
+	    outputStream << country.getName() << endl
+			 << country.getCapital() << endl
+			 << country.getLanguage() << endl
+			 << fixed << setprecision(1) << country.getArea()
+			 << endl << country.getPopulation() << endl
+			 << country.getDescription() << endl;
+	}
+	delete [] keys;
     }
     outputStream.close();
-    delete [] keys;
     return true;
 }
 void listContentsOf(const Dictionary<string, Country>& dict) {
@@ -134,7 +138,7 @@ void listContentsOf(const Dictionary<string, Country>& dict) {
 	cout << "No countries in Wiki.\n";
     }
 }
-void showCountry(const Dictionary<string, Country>& dict) {
+void showCountryIn(const Dictionary<string, Country>& dict) {
     string countryName;
     cout << "Please enter a country's full name: ";
     getline(cin, countryName);

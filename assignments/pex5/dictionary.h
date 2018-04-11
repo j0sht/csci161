@@ -26,6 +26,10 @@ public:
     // Property accessors
     bool isEmpty() const { return size == 0; }
     int getSize() const { return size; }
+    // getKeys returns a pointer to a heap-allocated array of
+    //  copies of all the keys in items. It is the responsibility
+    //  of the user of getKeys to delete the array when they are
+    //  done with the array.
     string* getKeys() const throw (EmptyDictionary);
     // Methods
     void insert(Key key, Value& value) throw (ExisitingKey);
@@ -51,6 +55,7 @@ private:
 };
 
 /* Dictionary Implementation */
+// Constructor and Destructor
 template <typename Key, typename Value>
 Dictionary<Key,Value>::Dictionary() {
     capacity = 2;
@@ -64,6 +69,8 @@ Dictionary<Key,Value>::~Dictionary() {
 // Getters
 template <typename Key, typename Value>
 string* Dictionary<Key,Value>::getKeys() const throw (EmptyDictionary) {
+    if (isEmpty())
+	throw EmptyDictionary();
     string* keys = new string[size];
     for (int i = 0; i < size; i++)
 	keys[i] = items[i].key;
@@ -75,8 +82,7 @@ void Dictionary<Key,Value>::insert(Key key, Value& value) throw (ExisitingKey) {
     if (size >= capacity)
 	doubleCapacity();
     int index;
-    bool found = binarySearch(key, index);
-    if (found)
+    if (binarySearch(key, index))
 	throw ExisitingKey();
     Item newItem;
     newItem.key = key;
@@ -89,30 +95,26 @@ void Dictionary<Key,Value>::insert(Key key, Value& value) throw (ExisitingKey) {
 template <typename Key, typename Value>
 Value& Dictionary<Key,Value>::remove(Key key) throw (ValueNotFound) {
     int index;
-    bool found = binarySearch(key, index);
-    if (!found)
+    if (!binarySearch(key, index))
 	throw ValueNotFound();
     Item item = items[index];
     Value& val = *(item.value);
-    for (int i = index; i < size; i++)
-	if (i+1 < size)
-	    items[i] = items[i+1];
+    for (int i = index; i < size-1; i++)
+	items[i] = items[i+1];
     size--;
     return val;
 }
 template <typename Key, typename Value>
 Value& Dictionary<Key,Value>::valueForKey(Key key) const throw (ValueNotFound) {
     int index;
-    bool found = binarySearch(key, index);
-    if (!found)
+    if (!binarySearch(key, index))
 	throw ValueNotFound();
     return *(items[index].value);
 }
 template <typename Key, typename Value>
 bool Dictionary<Key, Value>::contains(Key key) const  {
     int index;
-    bool found = binarySearch(key, index);
-    return found;
+    return binarySearch(key, index);
 }
 // Private Methods
 template <typename Key, typename Value>
