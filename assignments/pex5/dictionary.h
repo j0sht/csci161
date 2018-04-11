@@ -78,7 +78,6 @@ void Dictionary<Key,Value>::insert(Key key, Value& value) throw (ExisitingKey) {
     bool found = binarySearch(key, index);
     if (found)
 	throw ExisitingKey();
-    cout << "Inserting " << key << " at: " << index << endl;
     Item newItem;
     newItem.key = key;
     newItem.value = &value;
@@ -96,7 +95,8 @@ Value& Dictionary<Key,Value>::remove(Key key) throw (ValueNotFound) {
     Item item = items[index];
     Value& val = *(item.value);
     for (int i = index; i < size; i++)
-	items[i] = items[i+1];
+	if (i+1 < size)
+	    items[i] = items[i+1];
     size--;
     return val;
 }

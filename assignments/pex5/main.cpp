@@ -12,6 +12,7 @@
 #include <iostream>
 #include <fstream>
 #include <cstdlib>
+#include <iomanip>
 #include <algorithm> // for transform
 using namespace std;
 
@@ -115,7 +116,7 @@ bool write(Dictionary<string, Country>& dict) {
 	outputStream << country.getName() << endl
 		     << country.getCapital() << endl
 		     << country.getLanguage() << endl
-		     << static_cast<l_int>(country.getArea()) << endl
+		     << fixed << setprecision(1) << country.getArea() << endl
 		     << country.getPopulation() << endl
 		     << country.getDescription() << endl;
     }
