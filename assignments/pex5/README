@@ -19,6 +19,9 @@ Where '$' represents the terminal prompt, and assuming country.h,
 country.cpp, dictionary.h, main.cpp, and Makefile are in the directory
 in which the command is run.
 
+NOTE: The main file uses a scoped enum and requires at least c++11 or
+      greater to compile successfully.
+
 Overview:
     - This program allows user to maintain a "Wiki" of Country data.
       Users can add, remove, and update country data, as wells as
@@ -28,8 +31,8 @@ Overview:
       (case-insensitive).
 
 Design:
-    - The program consists of two primary classes, and an associated error
-      classes.
+    - The program consists of two primary classes, associated error
+      classes, and an scoped enum class.
     - The Country class contains all the associated data of a Country,
       including a country's full name (string*), capital (string*), language
       (string*), area (double), population (long int), and a brief description
@@ -54,6 +57,8 @@ Design:
     - The ValueNotFound class is an error class, thrown when a user attempts
       the remove or valueForKey methods on a dictionary when the given key
       does not exist in the dictionary.
+    - The Command enum class is an enumeration of values representing
+      acceptable user commands in the main program.
 
 Implementation:
     - The Dictionary class uses a growing array based data structure to

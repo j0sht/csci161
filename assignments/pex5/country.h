@@ -2,27 +2,16 @@
  * File: country.h
  * Author: Joshua Tate
  * Date: April 2, 2018
- * Updated: April 4, 2018
+ * Updated: April 11, 2018
  *
  * Purpose:
  *    - This file contains the definition of a Country, which consists of:
  *        - name (string*): The country's name.
- *           * MUST BE UNIQUE.
- *           * CANNOT BE EMPTY.
- *           * May contain whitespaces.
- *
  *        - capital (string*): Name of the capital of the country.
- *           * May contain whitespaces.
- *
  *        - language (string*): Official language(s) used in the country.
- *
  *        - area (double): The total area in kilometers of the country.
- *
  *        - population (long int): The most recently estimated population.
- *
  *        - description (string*): Short description of country.
- *           * MAX 255 characters.
- *           * MUST NOT CONTAIN NEW LINE CHARACTERS.
  */
 #ifndef COUNTRY_H
 #define COUNTRY_H

@@ -37,9 +37,8 @@ bool read(Dictionary<string, Country>& dict);
 // Writes contents of dict into FILENAME.
 //  returns true if open is successful, otherwise returns false.
 bool write(const Dictionary<string, Country>& dict);
-// Prints list of acceptable user commands to cout
 void printMenu();
-Command getUserCommand();
+Command userCommand();
 void convertToLowercase(string& s);
 void listContentsOf(const Dictionary<string, Country>& dict);
 void showCountryIn(const Dictionary<string, Country>& dict);
@@ -56,7 +55,7 @@ int main() {
     printMenu();
     bool running = true;
     while (running) {
-	Command cmd = getUserCommand();
+	Command cmd = userCommand();
 	switch (cmd) {
 	case Command::List:
 	    listContentsOf(dict);
@@ -272,7 +271,7 @@ void printMenu() {
 	 << "       enter help to see this menu\n"
 	 << "       enter exit to terminate this program.\n";
 }
-Command getUserCommand() {
+Command userCommand() {
     Command cmd;
     do {
 	cout << "--------------------------\n"

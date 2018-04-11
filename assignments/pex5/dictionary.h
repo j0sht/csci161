@@ -2,7 +2,7 @@
  * File: dictionary.h
  * Author: Joshua Tate
  * Date: April 10, 2018
- * Updated: April 10, 2018
+ * Updated: April 11, 2018
  *
  * Purpose:
  *    - This file contains the definition and implementation
