@@ -71,6 +71,8 @@ string* Dictionary<Key,Value>::getKeys() const throw (EmptyDictionary) {
 // Public Methods
 template <typename Key, typename Value>
 void Dictionary<Key,Value>::insert(Key key, Value& value) throw (ExisitingKey) {
+    if (size == capacity)
+	doubleCapacity();
     int index;
     bool found = binarySearch(key, index);
     if (found)
@@ -78,8 +80,6 @@ void Dictionary<Key,Value>::insert(Key key, Value& value) throw (ExisitingKey) {
     Item newItem;
     newItem.key = key;
     newItem.value = &value;
-    if (size == capacity)
-	doubleCapacity();
     for (int i = size; i > index; i--)
 	items[i] = items[i-1];
     items[index] = newItem;
