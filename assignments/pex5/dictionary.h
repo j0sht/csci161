@@ -72,12 +72,13 @@ string* Dictionary<Key,Value>::getKeys() const throw (EmptyDictionary) {
 // Public Methods
 template <typename Key, typename Value>
 void Dictionary<Key,Value>::insert(Key key, Value& value) throw (ExisitingKey) {
-    if (size == capacity)
+    if (size >= capacity)
 	doubleCapacity();
     int index;
     bool found = binarySearch(key, index);
     if (found)
 	throw ExisitingKey();
+    cout << "Inserting " << key << " at: " << index << endl;
     Item newItem;
     newItem.key = key;
     newItem.value = &value;
@@ -131,21 +132,20 @@ void Dictionary<Key,Value>::deleteItems() {
 }
 template <typename Key, typename Value>
 bool Dictionary<Key,Value>::binarySearch(Key key, int& index) const {
-    bool found = false;
     int lower, mid, upper;
     lower = mid = 0;
-    upper = size;
+    upper = size-1;
     while (lower <= upper) {
 	mid = (upper + lower) / 2;
 	if (items[mid].key == key) {
-	    found = true;
-	    break;
+	    index = mid;
+	    return true;
 	} else if (items[mid].key.compare(key) < 0) {
 	    lower = mid+1;
 	} else {
 	    upper = mid-1;
 	}
     }
-    index = mid;
-    return found;
+    index = lower;
+    return false;
 }

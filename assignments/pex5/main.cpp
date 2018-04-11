@@ -104,10 +104,23 @@ bool read(Dictionary<string, Country>& dict) {
     return true;
 }
 bool write(Dictionary<string, Country>& dict) {
-    // ofstream outputStream;
-    // outputStream.open(FILENAME);
-    // if (outputStream.fail())
-    // 	return false;
+    ofstream outputStream;
+    outputStream.open(FILENAME);
+    if (outputStream.fail())
+	return false;
+    outputStream << dict.getSize() << endl;
+    string* keys = dict.getKeys();
+    for (int i = 0; i < dict.getSize(); i++) {
+	CountryRef country = dict.valueForKey(keys[i]);
+	outputStream << country.getName() << endl
+		     << country.getCapital() << endl
+		     << country.getLanguage() << endl
+		     << static_cast<l_int>(country.getArea()) << endl
+		     << country.getPopulation() << endl
+		     << country.getDescription() << endl;
+    }
+    outputStream.close();
+    delete [] keys;
     return true;
 }
 void listContentsOf(const Dictionary<string, Country>& dict) {
