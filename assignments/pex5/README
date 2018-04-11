@@ -1,0 +1,80 @@
+/*
+ * File: README
+ * Author: Joshua Tate
+ * Date: April 11, 2018
+ * Updated: April 11, 2018
+ *
+ * Purpose:
+ *    - This file provides an overview of the pex5 program.
+ */
+pex5 is a C++ program that can be compiled with the command:
+
+    $ make
+
+Once compiled, the program can simply be run with:
+
+    $ ./pex5
+
+Where '$' represents the terminal prompt, and assuming country.h,
+country.cpp, dictionary.h, main.cpp, and Makefile are in the directory
+in which the command is run.
+
+Overview:
+    - This program allows user to maintain a "Wiki" of Country data.
+      Users can add, remove, and update country data, as wells as
+      list all Countries in the database. The program runs as long as
+      the user does not enter 'exit' (case-insensitive). The user can
+      also display the help menu whenever they want by entering 'help'
+      (case-insensitive).
+
+Design:
+    - The program consists of two primary classes, and an associated error
+      classes.
+    - The Country class contains all the associated data of a Country,
+      including a country's full name (string*), capital (string*), language
+      (string*), area (double), population (long int), and a brief description
+      (string*). Users of the Country class can use it with '<<' and '>>'
+      operators, and get and set the fields with their associated getters
+      and setters.
+    - The Dictionary class is an implementation of the abstract data
+      type Dictionary. It is a generic template class, and can be used
+      with <Key,Value> pairs of any type, although Key is assumed to be
+      a simple type like string or int. Users of the Dictionary class can
+      get all the keys in the dictionary with the getKeys method, insert
+      Key+Value pairs, remove a given Key, get the value for a given Key,
+      and check that the dictionary contains a given Key. Users can also
+      get the size of the dictionary (number of key-value pairs), and check
+      if it is empty.
+    - The EmptyDictionary class is an error class, thrown when users of
+      the Dictionary class attempt to get all the keys for an empty
+      dictionary.
+    - The ExisitingKey class is an error class, thrown when a user attempts
+      to insert a key-value pair for a key that already exists in the
+      dictionary.
+    - The ValueNotFound class is an error class, thrown when a user attempts
+      the remove or valueForKey methods on a dictionary when the given key
+      does not exist in the dictionary.
+
+Implementation:
+    - The Dictionary class uses a growing array based data structure to
+      contain the key-value pairs. These key-value pairs are maintained
+      in an ascending key-sorted order to make insertion, removal and
+      search operations more efficient.
+    - The advantage of using this kind of data structure is that the
+      Dictionary can grow as large as the user requires, and insertion,
+      removal, and search operations are efficient.
+    - A disadvantage of using this kind of data structure is that memory
+      must be managed manually and must be done carefully to avoid
+      memory leaks that can cause the program to crash if not managed
+      properly.
+
+Accomplishment:
+    - This program satisfies all requirements of the assignment.
+
+Testing:
+    - All methods of the classes have been sufficiently tested and passed
+      each test. The program was run with identical input mimicking the sample
+      run on the assignment page and produced identical output.
+
+Known Bugs:
+    - As of testing on April 11, 2018, there are no known bugs.
