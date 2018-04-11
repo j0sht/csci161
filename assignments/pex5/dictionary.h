@@ -94,7 +94,7 @@ Value& Dictionary<Key,Value>::remove(Key key) throw (ValueNotFound) {
 	throw ValueNotFound();
     Item item = items[index];
     Value& val = *(item.value);
-    for (int i = 0; i < size; i++)
+    for (int i = index; i < size; i++)
 	items[i] = items[i+1];
     size--;
     return val;

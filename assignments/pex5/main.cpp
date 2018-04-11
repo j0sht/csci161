@@ -131,6 +131,76 @@ void showCountry(const Dictionary<string, Country>& dict) {
 	cout << countryName << " doesn't exist in the Wiki.\n";
     }
 }
+void removeCountryFrom(Dictionary<string, Country>& dict) {
+    cout << "Please enter a country's full name: ";
+    string key;
+    getline(cin, key);
+    try {
+	CountryRef country = dict.remove(key);
+	cout << "Country " << country.getName()
+	     << " removed from the Wiki.\n";
+	delete &country;
+    } catch (ValueNotFound& e) {
+	cout << "Country " << key << " doesn't exist in the Wiki.\n";
+    }
+}
+void updateCountryIn(Dictionary<string, Country>& dict) {
+    cout << "Please enter a country's full name: ";
+    string input, garbage;
+    getline(cin, input);
+    try {
+	CountryRef country = dict.valueForKey(input);
+	cout << "0: capital\n"
+	     << "1: language\n"
+	     << "2: area\n"
+	     << "3: population\n"
+	     << "4: description\n"
+	     << "Which field do you want to update: ";
+	getline(cin, input);
+	convertToLowercase(input);
+	string& newString = *(new string);
+	if (input == "0" || input == "capital") {
+	    cout << "capital's old value: " << country.getCapital() << endl
+		 << "Your new value: ";
+	    getline(cin, newString);
+	    country.setCapital(newString);
+	    cout << "Thank you. Update completed.\n";
+        } else if (input == "1" || input == "language") {
+	    cout << "language's old value: " << country.getLanguage()
+		 << endl << "Your new value: ";
+	    getline(cin, newString);
+	    country.setLanguage(newString);
+	    cout << "Thank you. Update completed.\n";
+	} else if (input == "2" || input == "area") {
+	    cout << "area's old value: " << country.getArea() << endl
+		 << "Your new value: ";
+	    double area;
+	    cin >> area;
+	    getline(cin, garbage);
+	    country.setArea(area);
+	    cout << "Thank you. Update completed.\n";
+        } else if (input == "3" || input == "population") {
+	    cout << "population's old value: " << country.getPopulation()
+		 << endl << "Your new value: ";
+	    l_int population;
+	    cin >> population;
+	    getline(cin, garbage);
+	    country.setPopulation(population);
+	    cout << "Thank you. Update completed.\n";
+        } else if (input == "4" || input == "description") {
+	    cout << "description's old value: " << country.getDescription()
+		 << endl << "Your new value: ";
+	    getline(cin, newString);
+	    country.setDescription(newString);
+	    cout << "Thank you. Update completed.\n";
+	} else {
+	    cout << "You didn't choose a valid field. Make up your mind "
+		 << "and come back again.\n";
+	}
+    } catch (ValueNotFound& e) {
+	cout << "Country " << input << " doesn't exist in the Wiki.\n";
+    }
+}
 void addCountryTo(Dictionary<string, Country>& dict) {
     string& countryName = *(new string);
     string garbage;
@@ -172,22 +242,6 @@ void addCountryTo(Dictionary<string, Country>& dict) {
     country.setDescription(description);
     dict.insert(countryName, country);
     cout << "New country added into the Wiki.\n";
-}
-void removeCountryFrom(Dictionary<string, Country>& dict) {
-    cout << "Please enter a country's full name: ";
-    string key;
-    getline(cin, key);
-    try {
-	CountryRef country = dict.remove(key);
-	cout << "Country " << country.getName()
-	     << " removed from the Wiki.\n";
-	delete &country;
-    } catch (ValueNotFound& e) {
-	cout << "Country " << key << " doesn't exist in the Wiki.\n";
-    }
-}
-void updateCountryIn(Dictionary<string, Country>& dict) {
-    cout << "Updating a country...\n";
 }
 void printMenu() {
     cout << "Please enter list to show all countries' names\n"
