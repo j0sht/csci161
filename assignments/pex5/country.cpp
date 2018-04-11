@@ -24,6 +24,27 @@ Country::Country() {
 Country::~Country() {
     deleteFields();
 }
+// Setters
+void Country::setName(string& name) {
+    string* curr = this->name;
+    this->name = &name;
+    delete curr;
+}
+void Country::setCapital(string& capital) {
+    string* curr = this->capital;
+    this->capital = &capital;
+    delete curr;
+}
+void Country::setLanguage(string& language) {
+    string* curr = this->language;
+    this->language = &language;
+    delete curr;
+}
+void Country::setDescription(string& description) {
+    string* curr = this->description;
+    this->description = &description;
+    delete curr;
+}
 // I/O Friend Functions
 ostream& operator <<(ostream& outs, const Country& country) {
     outs << "--------------------\n"

@@ -42,12 +42,12 @@ public:
     double getArea() const { return area; }
     l_int getPopulation() const { return population; }
     string& getDescription() const { return *description; }
-    void setName(string& name) { this->name = &name; }
-    void setCapital(string& capital) { this->capital = &capital; }
-    void setLanguage(string& language) { this->language = &language; }
+    void setName(string& name);
+    void setCapital(string& capital);
+    void setLanguage(string& language);
     void setArea(double area) { this->area = area; }
     void setPopulation(l_int population) { this->population = population; }
-    void setDescription(string& desc) { description = &desc; }
+    void setDescription(string& desc);
     // I/O Friend Functions
     friend ostream& operator <<(ostream& outs, const Country& country);
     friend istream& operator >>(istream& ins, Country& country);

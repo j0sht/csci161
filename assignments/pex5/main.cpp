@@ -128,7 +128,8 @@ void showCountry(const Dictionary<string, Country>& dict) {
 	CountryRef country = dict.valueForKey(countryName);
 	cout << country << endl;
     } catch (ValueNotFound& e) {
-	cout << countryName << " doesn't exist in the Wiki.\n";
+	cout << "Country " << countryName
+	     << " doesn't exist in the Wiki.\n";
     }
 }
 void removeCountryFrom(Dictionary<string, Country>& dict) {
@@ -196,6 +197,7 @@ void updateCountryIn(Dictionary<string, Country>& dict) {
 	} else {
 	    cout << "You didn't choose a valid field. Make up your mind "
 		 << "and come back again.\n";
+	    delete &newString;
 	}
     } catch (ValueNotFound& e) {
 	cout << "Country " << input << " doesn't exist in the Wiki.\n";
