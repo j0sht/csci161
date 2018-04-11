@@ -110,6 +110,75 @@ bool write(Dictionary<string, Country>& dict) {
     // 	return false;
     return true;
 }
+void listContentsOf(const Dictionary<string, Country>& dict) {
+    try {
+	string* keys = dict.getKeys();
+	for (int i = 0; i < dict.getSize(); i++)
+	    cout << keys[i] << endl;
+	delete [] keys;
+    } catch (EmptyDictionary &e) {
+	cout << "No countries in Wiki.\n";
+    }
+}
+void showCountry(const Dictionary<string, Country>& dict) {
+    string countryName;
+    cout << "Please enter a country's full name: ";
+    getline(cin, countryName);
+    try {
+	CountryRef country = dict.valueForKey(countryName);
+	cout << country << endl;
+    } catch (ValueNotFound& e) {
+	cout << countryName << " doesn't exist in the Wiki.\n";
+    }
+}
+void addCountryTo(Dictionary<string, Country>& dict) {
+    string& countryName = *(new string);
+    string garbage;
+    cout << "Please enter a country's full name: ";
+    getline(cin, countryName);
+    if (dict.contains(countryName)) {
+	cout << "This country is already in the Wiki.\n";
+	delete &countryName;
+	return;
+    }
+    // Set country's name
+    CountryRef country = *(new Country);
+    country.setName(countryName);
+    // Set capital
+    string& capital = *(new string);
+    cout << "capital: ";
+    getline(cin, capital);
+    country.setCapital(capital);
+    // Set language
+    string& language = *(new string);
+    cout << "language: ";
+    getline(cin, language);
+    country.setLanguage(language);
+    // Set area
+    double area;
+    cout << "area: ";
+    cin >> area;
+    country.setArea(area);
+    // Set population
+    l_int pop;
+    cout << "population: ";
+    cin >> pop;
+    country.setPopulation(pop);
+    getline(cin, garbage);
+    // Set description
+    string& description = *(new string);
+    cout << "description: ";
+    getline(cin, description);
+    country.setDescription(description);
+    dict.insert(countryName, country);
+    cout << "New country added into the Wiki.\n";
+}
+void removeCountryFrom(Dictionary<string, Country>& dict) {
+    cout << "Removing a country...\n";
+}
+void updateCountryIn(Dictionary<string, Country>& dict) {
+    cout << "Updating a country...\n";
+}
 void printMenu() {
     cout << "Please enter list to show all countries' names\n"
 	 << "       enter show to show a country's info\n"
@@ -117,15 +186,16 @@ void printMenu() {
 	 << "       enter remove to remove an existing country\n"
 	 << "       enter update to update a country's info\n"
 	 << "       enter help to see this menu\n"
-	 << "       enter exit to terminate this program.\n"
-	 << "--------------------------\n";
+	 << "       enter exit to terminate this program.\n";
 }
 Command getUserCommand() {
     Command cmd;
     do {
-	cout << "Enter your command choice: ";
-	string s;
+	cout << "--------------------------\n"
+	     << "Enter your command choice: ";
+	string s, garbage;
 	cin >> s;
+	getline(cin, garbage);
 	convertToLowercase(s);
 	if (s == LIST) {
 	    cmd = Command::List;
@@ -156,26 +226,4 @@ Command getUserCommand() {
 }
 void convertToLowercase(string& s) {
     transform(s.begin(), s.end(), s.begin(), ::tolower);
-}
-void listContentsOf(const Dictionary<string, Country>& dict) {
-    try {
-	string* keys = dict.getKeys();
-	for (int i = 0; i < dict.getSize(); i++)
-	    cout << keys[i] << endl;
-	delete [] keys;
-    } catch (EmptyDictionary &e) {
-	cout << "No countries in wiki.\n";
-    }
-}
-void showCountry(const Dictionary<string, Country>& dict) {
-    cout << "Showing a country...\n";
-}
-void addCountryTo(Dictionary<string, Country>& dict) {
-    cout << "Adding a country...\n";
-}
-void removeCountryFrom(Dictionary<string, Country>& dict) {
-    cout << "Removing a country...\n";
-}
-void updateCountryIn(Dictionary<string, Country>& dict) {
-    cout << "Updating a country...\n";
 }
