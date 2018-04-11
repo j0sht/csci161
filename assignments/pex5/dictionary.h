@@ -8,6 +8,8 @@
  *    - This file contains the definition and implementation
  *      of a Dictionary.
  */
+#ifndef DICTIONARY_H
+#define DICTIONARY_H
 #include <iostream>
 using namespace std;
 
@@ -151,3 +153,4 @@ bool Dictionary<Key,Value>::binarySearch(Key key, int& index) const {
     index = lower;
     return false;
 }
+#endif
